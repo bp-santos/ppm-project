@@ -186,17 +186,14 @@ object Gallery {
     else c
   }
 
+  /** Obtains the contrast of a RGB color*/
   def contrast(c: Color):Color = {
-    val r = c.getRed
-    val g = c.getGreen
-    val b = c.getBlue
-    val r = r * 1.3 //n ei q valor colocar para contrat
-    val g = g * 1.3
-    val b = b * 1.3
-    if(b>255) b = 255
-    if(r>255) r = 255
-    if (g>255)
-  }*/
+    val cont = 2 //n sei q valor colocar para contrast
+    val red = colorComponentInRange(c.getRed*cont)
+    val green = colorComponentInRange(c.getGreen*cont)
+    val blue = colorComponentInRange(c.getBlue*cont)
+    new Color (red, green, blue)
+  }
 
   /** Uniform mapping of a function onto the entire image.
    * It should be able to illustrate the application of the effects mentioned above. */
