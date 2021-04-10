@@ -11,6 +11,9 @@ case class QLeaf[A, B](value: B) extends QTree[A]
 case class BitMap(value: List[List[Int]]) {
 
   def imgToBitmap(arr: Array[Array[Int]]): Unit = {
+    val imiarr = ImageUtil.readColorImage("objc2_2.png") //ler imagem para matriz Array[Array]. Tranformado em List[Array[Int]]
+    val imil = imiarr map (_.toList) toList //Convertido para List[List[Int]]
+    var copiando =
 
     imil match {
       case Nil => Nil
