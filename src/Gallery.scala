@@ -12,12 +12,17 @@ case class BitMap(value: List[List[Int]]) {
 
   def imgToBitmap(arr: Array[Array[Int]]): Unit = {
 
-    //arr match {}
+    imil match {
+      case Nil => Nil
+      case List(List(x)) => {
+        val a = ImageUtil.decodeRgb(x)
+
+      }
+    }
+    ImageUtil.writeImage(imiarr, "src/objc2_test.png", "png")
   }
-
-
-
 }
+
 // readColorImage -> ler matriz -> decode recursively -> transformar arrays em listas
 //lista de integer ? ou Array?
 //lista de lista de 3 inteiros ou apenas 1
@@ -26,10 +31,13 @@ case class Gallery[A](myField: QTree[A]){
   //def makeQTree(b:BitMap):QTree[A] = Gallery.makeQTree(b)
   //def makeBitMap():BitMap = Gallery.makeBitMap(this.myField)
   def scale(scale:Double):QTree[A] = Gallery.scale(scale,this.myField)
-  /*def mirrorV():QTree[A] = Gallery.mirrorV(this.myField)
+  def mirrorV():QTree[A] = Gallery.mirrorV(this.myField)
   def mirrorH():QTree[A] = Gallery.mirrorH(this.myField)
-  def rotateL():QTree[A] = Gallery.rotateL(this.myField)
-  def rotateR():QTree[A] = Gallery.rotateR(this.myField)*/
+  //def rotateL():QTree[A] = Gallery.rotateL(this.myField)
+  //def rotateR():QTree[A] = Gallery.rotateR(this.myField)*/
+  def noise(c: Color):Color = Gallery.noise(c)
+  def sepia(c: Color):Color = Gallery.sepia(c)
+  //def contrast(c: Color):Color = Gallery.contrast(c)
   def mapColorEffect(f:Color => Color):QTree[A] = Gallery.mapColorEffect(f,this.myField)
 }
 
@@ -66,6 +74,7 @@ object Gallery {
   //percorrer, cda vez que encontra uma folha retira as coordenadas e depois pinta da mesma cor
   //matriz imutavel
 
+  /** Magnification/reduction operation on an image, according to the factor provided */
   def scale[A](sc:Double, qt:QTree[A]):QTree[A] = {
     qt match{
       case QEmpty => QEmpty
@@ -77,25 +86,63 @@ object Gallery {
     }
   }
 
-  /*def mirrorV[A](qt:QTree[A]):QTree[A] = {
-    qt match{
-      case QEmpty => QEmpty
-      case QNode(value, one, two, three, four) =>
-        QNode(value, mirrorV(three), mirrorV(four), mirrorV(one), mirrorV(two))
-      case QLeaf(value) => QLeaf(value)
+  /** Given a QTree it calculates the max coordinate value. */
+  def maxTreeCoord[A](qt:QTree[A]):Int = {
+    qt match {
+      case QLeaf((cd:Coords,color)) => cd._2._2
+      case QNode(cd:Coords, _, _, _, _) => cd._2._2
+      case _ => 0
     }
   }
 
+  /** Given two diagonally opposite points on a square, it calculates the other two points. */
+  def oppositeCoords(cd:Coords):Coords = {
+    val x1 = cd._1._1
+    val y1 = cd._1._2
+    val x2 = cd._2._1
+    val y2 = cd._2._2
+    val xc:Double = (x1 + x2) / 2.0
+    val yc:Double = (y1 + y2) / 2.0
+    val xd:Double = (x1 - x2) / 2.0
+    val yd:Double = (y1 - y2) / 2.0
+    val x3 = xc - yd
+    val y3 = yc + xd
+    val x4 = xc + yd
+    val y4 = yc - xd
+    new Coords ((x4.toInt,y4.toInt),(x3.toInt,y3.toInt))
+   }
+
+  /** Vertical mirroring operation. */
+  def mirrorV[A](qt:QTree[A]):QTree[A] = {
+    val max = maxTreeCoord(qt)
+    def aux[A](qt:QTree[A],max:Int):QTree[A] = {
+      qt match {
+        case QNode(value, one, two, three, four) =>
+          QNode(value, aux(two,max), aux(one,max), aux(three,max), aux(four,max))
+        case QLeaf((cd:Coords, color)) =>
+          QLeaf((oppositeCoords(new Coords ((max - cd._1._1,cd._1._2),(max - cd._2._1, cd._2._2))), color))
+        case _ => QEmpty
+      }
+    }
+    aux(qt,max)
+  }
+
+  /** Horizontal mirroring operation. */
   def mirrorH[A](qt:QTree[A]):QTree[A] = {
-    qt match{
-      case QEmpty => QEmpty
-      case QNode(value, one, two, three, four) =>
-        QNode(value, mirrorH(two), mirrorH(one), mirrorH(four), mirrorH(three))
-      case QLeaf(value) => QLeaf(value)
+    val max = maxTreeCoord(qt)
+    def aux (qt:QTree[A],max:Int):QTree[A] = {
+      qt match {
+        case QEmpty => QEmpty
+        case QNode(value, one, two, three, four) =>
+          QNode(value, aux(three,max), aux(four,max), aux(one,max), aux(two,max))
+        case QLeaf((cd: Coords, color)) =>
+          QLeaf((oppositeCoords(new Coords ((cd._1._1,max - cd._1._2),(cd._2._1, max - cd._2._2))), color))
+      }
     }
+    aux(qt,max)
   }
 
-  def rotateL[A](qt:QTree[A]):QTree[A] = {
+  /*def rotateL[A](qt:QTree[A]):QTree[A] = {
     qt match{
       case QEmpty => QEmpty
       case QNode(value, one, two, three, four) =>
@@ -104,34 +151,39 @@ object Gallery {
     }
   }
 
-
-
   def rotateR[A](qt:QTree[A]):QTree[A] = {
     qt match{
       case QEmpty => QEmpty
       case QNode(value, one, two, three, four) =>
-        QNode(value, rotateR(three), rotateR(one), rotateR(four), rotateR(two))
+        QNode(value, rotateR(two), rotateR(four), rotateR(one), rotateR(three))
       case QLeaf(value) => QLeaf(value)
     }
   }*/
 
-  def sepia(c: Color):Color = {
-    val r = c.getRed
-    val g = c.getGreen
-    val b = c.getBlue
-    val avg = (r+g+b)/3
-    val depth = 20
-    val rr = avg+(2*depth)
-    val gg = avg+depth
-    new Color (rr,gg,b)
+  /** Checks whether the given value is valid as an RGB component */
+  def colorComponentInRange(component: Int):Int = {
+    if (component > 255) 255
+    else if (component < 0) 0
+    else component
   }
 
-  /*def noise(c: Color):Color = {
-    //Acho q o noise e aquilo de preto + cor , preto + cor
-    val r = c.getRed
-    val g = c.getGreen
-    val b = c.getBlue
-    val bl = c.getBlack
+  /** Obtains the sepia of a RGB color*/
+  def sepia(c: Color):Color = {
+    val avg = (c.getRed+c.getGreen+c.getBlue)/3
+    val depth = 20
+    val intensity = 30
+    val red = colorComponentInRange(avg+(2*depth))
+    val green = colorComponentInRange(avg+depth)
+    val blue  = colorComponentInRange(c.getBlue-intensity)
+    new Color (red,green,blue)
+  }
+
+  /** Obtains the noise value of a RGB color*/
+  def noise(c: Color):Color = {
+    val random = new scala.util.Random
+    val noise = random.nextFloat
+    if (noise < 0.01) Color.white //pq branco e nao preto
+    else c
   }
 
   def contrast(c: Color):Color = {
@@ -146,6 +198,8 @@ object Gallery {
     if (g>255)
   }*/
 
+  /** Uniform mapping of a function onto the entire image.
+   * It should be able to illustrate the application of the effects mentioned above. */
   def mapColorEffect[A](f:Color => Color, qt:QTree[A]):QTree[A] = {
     qt match{
       case QEmpty => QEmpty
