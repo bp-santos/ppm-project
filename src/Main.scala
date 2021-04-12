@@ -10,6 +10,11 @@ object Main extends App {
     val qt: QTree[Coords] = QNode(((0,0),(2,2)), l1, l2, l3, l4)
 
     println(qt)
-    println(Gallery.mirrorV(qt))
+    //println(Gallery.mirrorV(qt))
+    //println(Gallery.mirrorH(qt))
+
+    //val myList = Array(Array(1.9, 2.9, 3.4, 3.5))
+    //println(Gallery.toList(myList))
+
 
 }
