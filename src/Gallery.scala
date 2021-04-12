@@ -9,12 +9,10 @@ case class QNode[A](value: A, one: QTree[A], two: QTree[A], three: QTree[A], fou
 case class QLeaf[A, B](value: B) extends QTree[A]
 
 case class BitMap(value: List[List[Int]]) {
-
-  def imgToBitmap(arr: Array[Array[Int]]): Unit = {
+  /*def imgToBitmap(arr: Array[Array[Int]]): Unit = {
     val imiarr = ImageUtil.readColorImage("objc2_2.png") //ler imagem para matriz Array[Array]. Tranformado em List[Array[Int]]
     val imil = imiarr map (_.toList) toList //Convertido para List[List[Int]]
     var copiando =
-
     imil match {
       case Nil => Nil
       case List(List(x)) => {
@@ -23,12 +21,8 @@ case class BitMap(value: List[List[Int]]) {
       }
     }
     ImageUtil.writeImage(imiarr, "src/objc2_test.png", "png")
-  }
+  }*/
 }
-
-// readColorImage -> ler matriz -> decode recursively -> transformar arrays em listas
-//lista de integer ? ou Array?
-//lista de lista de 3 inteiros ou apenas 1
 
 case class Gallery[A](myField: QTree[A]){
   //def makeQTree(b:BitMap):QTree[A] = Gallery.makeQTree(b)
@@ -40,28 +34,15 @@ case class Gallery[A](myField: QTree[A]){
   //def rotateR():QTree[A] = Gallery.rotateR(this.myField)*/
   def noise(c: Color):Color = Gallery.noise(c)
   def sepia(c: Color):Color = Gallery.sepia(c)
-  //def contrast(c: Color):Color = Gallery.contrast(c)
+  def contrast(c: Color):Color = Gallery.contrast(c)
   def mapColorEffect(f:Color => Color):QTree[A] = Gallery.mapColorEffect(f,this.myField)
 }
-
 
 object Gallery {
 
   type Point = (Int, Int)
   type Coords = (Point, Point)
   type Section = (Coords, Color)
-
-  /*def makeQTree[A](b:BitMap):QTree[A] = {
-    b.value match{
-      case Nil => QEmpty
-    }
-  }*/
-
-  //Coordenadas
-  //(0,0) (1,0)
-  //(0,1) (1,1)
-
-  def findCoord(l: Int, c: Int):Int = sqrt(l^2 - c^2).toInt
 
   //converter array de array em listas de listas
   //dividir a matriz em quadrados(função) dada uma matriz saber qual o conteudo de cada quadrante
@@ -72,12 +53,18 @@ object Gallery {
   //pensar para quando é impar (somos nos a decidir qual dos quadrantes o maior) ->
   //qnode com 2 subarvores tem de ter dois empty
 
-  //def makeBitMap[A](qt:QTree[A]):BitMap = {}
+  def findCoord(l: Int, c: Int):Int = sqrt(l^2 - c^2).toInt
+
+  /** Creation of a QTree from a given bitmap. */
+  /*def makeQTree[A](b:BitMap):QTree[A] = {}*/
 
   //percorrer, cda vez que encontra uma folha retira as coordenadas e depois pinta da mesma cor
   //matriz imutavel
 
-  /** Magnification/reduction operation on an image, according to the factor provided */
+  /** Creation of a BitMap from a given QTree. */
+  //def makeBitMap[A](qt:QTree[A]):BitMap = {}
+
+  /** Magnification/reduction operation on an image, according to the factor provided. */
   def scale[A](sc:Double, qt:QTree[A]):QTree[A] = {
     qt match{
       case QEmpty => QEmpty
@@ -115,13 +102,14 @@ object Gallery {
     new Coords ((x4.toInt,y4.toInt),(x3.toInt,y3.toInt))
    }
 
-  /** Vertical mirroring operation. */
+  /** Vertical mirroring operation.
+   * Note: Just works for squares. */
   def mirrorV[A](qt:QTree[A]):QTree[A] = {
     val max = maxTreeCoord(qt)
     def aux[A](qt:QTree[A],max:Int):QTree[A] = {
       qt match {
         case QNode(value, one, two, three, four) =>
-          QNode(value, aux(two,max), aux(one,max), aux(three,max), aux(four,max))
+          QNode(value, aux(two,max), aux(one,max), aux(four,max), aux(three,max))
         case QLeaf((cd:Coords, color)) =>
           QLeaf((oppositeCoords(new Coords ((max - cd._1._1,cd._1._2),(max - cd._2._1, cd._2._2))), color))
         case _ => QEmpty
@@ -130,7 +118,8 @@ object Gallery {
     aux(qt,max)
   }
 
-  /** Horizontal mirroring operation. */
+  /** Horizontal mirroring operation.
+   * Note: Just works for squares. */
   def mirrorH[A](qt:QTree[A]):QTree[A] = {
     val max = maxTreeCoord(qt)
     def aux (qt:QTree[A],max:Int):QTree[A] = {
@@ -145,32 +134,20 @@ object Gallery {
     aux(qt,max)
   }
 
-  /*def rotateL[A](qt:QTree[A]):QTree[A] = {
-    qt match{
-      case QEmpty => QEmpty
-      case QNode(value, one, two, three, four) =>
-        QNode(value, rotateL(two), rotateL(four), rotateL(one), rotateL(three))
-      case QLeaf(value) => QLeaf(value)
-    }
-  }
+  /** 90 degree rotation to the left. */
+  //def rotateL[A](qt:QTree[A]):QTree[A] = {}
 
-  def rotateR[A](qt:QTree[A]):QTree[A] = {
-    qt match{
-      case QEmpty => QEmpty
-      case QNode(value, one, two, three, four) =>
-        QNode(value, rotateR(two), rotateR(four), rotateR(one), rotateR(three))
-      case QLeaf(value) => QLeaf(value)
-    }
-  }*/
+  /** 90 degree rotation to the right. */
+  //def rotateR[A](qt:QTree[A]):QTree[A] = {}
 
-  /** Checks whether the given value is valid as an RGB component */
+  /** Checks whether the given value is valid as an RGB component. */
   def colorComponentInRange(component: Int):Int = {
     if (component > 255) 255
     else if (component < 0) 0
     else component
   }
 
-  /** Obtains the sepia of a RGB color*/
+  /** Obtains the sepia of a RGB color. */
   def sepia(c: Color):Color = {
     val avg = (c.getRed+c.getGreen+c.getBlue)/3
     val depth = 20
@@ -181,7 +158,7 @@ object Gallery {
     new Color (red,green,blue)
   }
 
-  /** Obtains the noise value of a RGB color*/
+  /** Obtains the noise value of a RGB color. */
   def noise(c: Color):Color = {
     val random = new scala.util.Random
     val noise = random.nextFloat
@@ -189,7 +166,7 @@ object Gallery {
     else c
   }
 
-  /** Obtains the contrast of a RGB color*/
+  /** Obtains the contrast of a RGB color. */
   def contrast(c: Color):Color = {
     val cont = 2 //n sei q valor colocar para contrast
     val red = colorComponentInRange(c.getRed*cont)
