@@ -148,7 +148,20 @@ object Gallery {
   //def rotateL[A](qt:QTree[A]):QTree[A] = {}
 
   /** 90 degree rotation to the right. */
-  //def rotateR[A](qt:QTree[A]):QTree[A] = {}
+ /*def rotateR[A](qt:QTree[A]):QTree[A] = {
+   val max_x = maxTreeCoord(qt,1)
+   val max_y = maxTreeCoord(qt,0)
+   def aux (qt:QTree[A],max:Int):QTree[A] = {
+     qt match {
+       case QNode(value, one, two, three, four) =>
+          QNode(value, aux(three,max), aux(four,max), aux(one,max), aux(two,max))
+       case QLeaf((cd: Coords, color)) && (cd._1._2==0 && cd._1._1 != max_x-1 && cd._1._2 =! max_y-1) =>
+          QLeaf(new Coords ((cd._1._1+1,cd._1._2),(cd._2._1+1,cd._2._2)), color)
+       case _ => QEmpty
+     }
+   }
+   aux(qt,max)
+ }*/
 
   /** Checks whether the given value is valid as an RGB component. */
   def colorComponentInRange(component: Int):Int = {
@@ -172,7 +185,7 @@ object Gallery {
   def noise(c: Color):Color = {
     val random = new scala.util.Random
     val noise = random.nextFloat
-    if (noise < 0.01) Color.white //pq branco e nao preto
+    if (noise < 0.5) Color.white
     else c
   }
 
