@@ -11,10 +11,8 @@ object Main extends App {
 
     println(qt)
     //println(Gallery.mirrorV(qt))
-    //println(Gallery.mirrorH(qt))
+    println(Gallery.rotateL(qt))
 
     //val myList = Array(Array(1.9, 2.9, 3.4, 3.5))
     //println(Gallery.toList(myList))
-
-
 }
