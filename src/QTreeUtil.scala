@@ -1,97 +1,83 @@
 import java.awt.Color
+import scala.annotation.tailrec
 
-/*sealed*/ trait QTree[+A]
-
-case object QEmpty extends QTree[Nothing]
-
-case class QNode[A](value: A, one: QTree[A], two: QTree[A], three: QTree[A], four: QTree[A]) extends QTree[A]
-
-case class QLeaf[A, B](value: B) extends QTree[A]
-
-case class BitMap(value: Array[Array[Int]])
-
-case class Album[A](name: String, content:List[QTree[A]])
-
-case class Gallery[A](qt: QTree[A]){
-  //def makeQTree(b:BitMap):QTree[A] = Gallery.makeQTree(b)
-  //def makeBitMap():BitMap = Gallery.makeBitMap(this.qt)
-  def scale(scale:Double):QTree[A] = Gallery.scale(scale,this.qt)
-  def maxTreeCord(value:Int):Int = Gallery.maxTreeCord(this.qt,value)
-  def mirrorV():QTree[A] = Gallery.mirrorV(this.qt)
-  def mirrorH():QTree[A] = Gallery.mirrorH(this.qt)
-  def rotateL():QTree[A] = Gallery.rotateL(this.qt)
-  def rotateR():QTree[A] = Gallery.rotateR(this.qt)
-  def colorComponentInRange(component: Int):Int = Gallery.colorComponentInRange(component)
-  def changeColor(c: Color, value:Double):Color = Gallery.changeColor(c,value)
-  def mapColorEffect(f:Color => Color):QTree[A] = Gallery.mapColorEffect(f,this.qt)
-  def noise(c: Color):Color = Gallery.noise(c)
-  def contrast(c: Color):Color = Gallery.contrast(c)
-  def sepia(c: Color):Color = Gallery.sepia(c)
+case class QTreeUtil[A](qt: QTree[A]){
+  def scale(scale:Double):QTree[A] = QTreeUtil.scale(scale,this.qt)
+  def mirrorV():QTree[A] = QTreeUtil.mirrorV(this.qt)
+  def mirrorH():QTree[A] = QTreeUtil.mirrorH(this.qt)
+  def rotateL():QTree[A] = QTreeUtil.rotateL(this.qt)
+  def rotateR():QTree[A] = QTreeUtil.rotateR(this.qt)
+  def mapColorEffect(f:Color => Color):QTree[A] = QTreeUtil.mapColorEffect(f,this.qt)
+  def noise(c: Color):Color = QTreeUtil.noise(c)
+  def contrast(c: Color):Color = QTreeUtil.contrast(c)
+  def sepia(c: Color):Color = QTreeUtil.sepia(c)
 }
 
-object Gallery {
+object QTreeUtil {
 
   type Point = (Int, Int)
   type Coords = (Point, Point)
   type Section = (Coords, Color)
 
-  //converter array de array em listas de listas
-
-  //dividir a matriz em quadrados(função) dada uma matriz saber qual o conteudo de cada quadrante
-  //função que diga quais sao as coordenadas dos quatro quadrantes
-  //recursividade até ser folha ou vazio
-  //quando temos apenas um pixel sabemos que é uma folha
-  //quanto temos todos os pixeis do quadrante com a mesma cor (função auxiliar) verificar se sao todos da mesma cor (criar qnode ou qleaf)
-  //pensar para quando é impar (somos nos a decidir qual dos quadrantes o maior) ->
-  //qnode com 2 subarvores tem de ter dois empty
-
-  /*def toList[A](matrix:Array[Array[A]]):List[List[A]] = {
+  private def toList[A](matrix:Array[Array[A]]):List[List[A]] = {
     if (matrix.length == 0 || matrix == null) Nil
     else (matrix map (_.toList)) toList
   }
 
-  def same(x1: Int, x2: Int):Boolean = x1.equals(x2)
+  private def equalColorList(lst: List[Int]) : Boolean = lst.distinct.length == 1
 
-  def notSame( lst: List[Int]) : Boolean = { (lst foldRight true) ((m1,m2,lst)=> !same(m1) && lst) }
-
-  def equalColor(matrix:List[List[Int]]):Boolean = {
-    val color = matrix(0)(0)
+  @tailrec
+  private def equalColor(matrix:List[List[Int]]) : Boolean = {
     matrix match {
-      case  List(x) => {
-        (x foldRight true) ( (e1, e2) ) =>
-          if ( ImageUtil.decodeRgb(e1) != ImageUtil.decodeRgb(e2)) false
-      }
+      case Nil => true
+      case x::xs => equalColorList(x) && equalColor(xs)
     }
-    true
   }
 
-  def convertToQuadrant(matrix:List[List[Int]]):List[List[Int]] = {
-    val max = matrix.length
-    val avg = max/2
-    matrix match {
-     case h::t =>  {
-        if (h(0) == avg)
-      }
-      case _ => Nil
+  //quando temos apenas um pixel sabemos que é uma folha
+  //pensar para quando é impar (somos nos a decidir qual dos quadrantes o maior)
+  //qnode com 2 subarvores tem de ter dois empty
+  //nao percorrer varias vezes pixeis ja percorridos
+  private def convertToQuadrants[A](matrix:List[List[Int]], cords: Coords):QTree[Coords] = {
+    val ini_x = cords._1._1
+    val ini_y = cords._1._2
+    val width = cords._2._1
+    val height = cords._2._2
+    val medium_width = width/2
+    val medium_height = height/2
+
+    val matrixToAnalyze = matrix.map()
+
+    matrix match{
+      case Nil => QEmpty
+      case _ =>
+        if (equalColor(matrix)) QLeaf((cords, ImageUtil.decodeRgb(matrix.head.head)))
+        else /*if (width % 2 == 0 && height % 2 == 0) {*/
+          QNode(cords, convertToQuadrants(matrix, (cords._1, (medium_width, medium_height))),
+            convertToQuadrants(matrix, ((medium_width, ini_y), (width, medium_height))),
+            convertToQuadrants(matrix, ((ini_x, medium_height), (medium_width, height))),
+            convertToQuadrants(matrix, ((medium_width, medium_height), cords._2)))
+      //else{
+      //  QNode(cords, convertToQuadrants(matrix, ((,),(,)) ), convertToQuadrants(matrix, ((,),(,)) ), convertToQuadrants(matrix, ((,),(,)) ), convertToQuadrants(matrix, ((,),(,)) ))
+      //}
     }
-  }*/
+  }
 
   /** Creation of a QTree from a given bitmap. */
-  /*def makeQTree[A](b:BitMap):QTree[A] = {
-    val matrix = toList(b.value)
-    matrix match {
-      case Nil => QEmpty
-      case h::t =>
-    }
-  }*/
-
-  //percorrer, cda vez que encontra uma folha retira as coordenadas e depois pinta da mesma cor
-  //matriz imutavel
+  def makeQTree[A](b:Array[Array[Int]] /*b:BitMap*/):QTree[Coords] = {
+    val matrix = toList(b /*b.value*/)
+    val width = matrix.head.length-1
+    val height = matrix.length-1
+    convertToQuadrants(matrix,((0,0),(width,height)))
+  }
 
   /** Creation of a BitMap from a given QTree. */
+  //percorrer, cda vez que encontra uma folha retira as coordenadas e depois pinta da mesma cor
+  //matriz imutavel
   //def makeBitMap[A](qt:QTree[A]):BitMap = {}
 
   /** Magnification/reduction operation on an image, according to the factor provided. */
+  //ajustamos as coordenadas mas nao fazemos nada sobre a cor mas em algumas situações necessário (média da cor dos pixeis de grande para pequeno ou gradiente de pequeno para grande)
   def scale[A](sc: Double, qt: QTree[A]): QTree[A] = {
     qt match {
       case QNode(value, one, two, three, four) =>
@@ -104,7 +90,7 @@ object Gallery {
   }
 
   /** Given a QTree it calculates the max coordinate value. */
-  def maxTreeCord[A](qt: QTree[A], value: Int): Int = {
+  private def maxTreeCord[A](qt: QTree[A], value: Int): Int = {
     qt match {
       case QLeaf((cd: Coords, _)) =>
         if (value == 1) cd._2._1
@@ -131,6 +117,7 @@ object Gallery {
     aux(qt, max)
   }
 
+  //fazer tambem para quando os quadrantes sao de tamanho diferente
   /** Horizontal mirroring operation. */
   def mirrorH[A](qt: QTree[A]): QTree[A] = {
     val max = maxTreeCord(qt, 0)
@@ -177,14 +164,14 @@ object Gallery {
  }
 
   /** Checks whether the given value is valid as an RGB component. */
-  def colorComponentInRange(component: Int): Int = {
+  private def colorComponentInRange(component: Int): Int = {
     if (component > 255) 255
     else if (component < 0) 0
     else component
   }
 
   /** Change the color components given according to a provided factor. */
-  def changeColor(c: Color, value: Double): Color = {
+  private def changeColor(c: Color, value: Double): Color = {
     val r = colorComponentInRange((c.getRed * value).toInt)
     val g = colorComponentInRange((c.getGreen * value).toInt)
     val b = colorComponentInRange((c.getBlue * value).toInt)
@@ -202,6 +189,7 @@ object Gallery {
   }
 
   /** Obtains the noise value of a RGB color. */
+    //fazer random puro
   def noise(c: Color): Color = {
     val random = new scala.util.Random
     val noise = random.nextFloat
@@ -230,37 +218,4 @@ object Gallery {
     new Color(red, green, blue)
   }
 
-  /** ...................................................................................................... */
-
-  def addPhoto[A](qt: QTree[A], album: Album[A]): Option[Album[A]] = {
-    if (album.content == Nil) None
-    else if (album.content.contains(qt)) Some(album)
-    else Some(Album(album.name, qt :: album.content))
-  }
-
-  def removePhoto[A](index: Int, album: Album[A]): Option[Album[A]] = {
-    if (album.content == Nil || album.content.isEmpty || (index - 1) > album.content.length) None
-    else Some(Album(album.name, album.content.take(index) ++ album.content.drop(index + 1)))
-  }
-
-  //def scrollAlbum[A](album: Album[A]):Option[Album[A]] = {}
-
-  def findPhoto[A](index:Int, album: Album[A]):Option[QTree[A]] = {
-    if (album.content == Nil || album.content.isEmpty || (index-1) > album.content.length) None
-    else Some(album.content.apply(index-1))
-  }
-
-  def changeAlbumOrder[A](f:Album[A] => Album[A], album: Album[A]):Option[Album[A]] = {
-    if (album.content == Nil || album.content.isEmpty) None
-    else Some(f(album))
-  }
-
-  def reverse[A](album:Album[A]):Option[Album[A]] = {
-    Some(Album(album.name, album.content.reverse))
-  }
-
-  def changeAlbumInfo[A](newName: String, album: Album[A]):Option[Album[A]] = {
-    if (newName.isEmpty) Some(album)
-    else Some(Album(newName,album.content))
-  }
 }

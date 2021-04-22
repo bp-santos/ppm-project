@@ -1,4 +1,4 @@
-import Gallery.{Coords, Section, Point}
+import QTreeUtil.{Coords, Point, Section}
 import java.awt.Color
 
 object Main extends App {
@@ -9,10 +9,6 @@ object Main extends App {
 
     val qt: QTree[Coords] = QNode(((0,0),(2,2)), l1, l2, l3, l4)
 
-    println(qt)
-    //println(Gallery.mirrorV(qt))
-    println(Gallery.rotateL(qt))
-
-    //val myList = Array(Array(1.9, 2.9, 3.4, 3.5))
-    //println(Gallery.toList(myList))
+    val bm: Array[Array[Int]] = ImageUtil.readColorImage("objc2_2.png")
+    println(QTreeUtil.makeQTree(bm))
 }

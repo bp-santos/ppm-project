@@ -1,0 +1,1 @@
+case class BitMap(value: Array[Array[Int]])
