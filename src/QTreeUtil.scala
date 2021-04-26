@@ -1,14 +1,17 @@
+import QTreeUtil.Coords
+
 import java.awt.Color
 import scala.annotation.tailrec
+import scala.util.Random
 
-case class QTreeUtil[A](qt: QTree[A]){
-  def scale(scale:Double):QTree[A] = QTreeUtil.scale(scale,this.qt)
-  def mirrorV():QTree[A] = QTreeUtil.mirrorV(this.qt)
-  def mirrorH():QTree[A] = QTreeUtil.mirrorH(this.qt)
-  def rotateL():QTree[A] = QTreeUtil.rotateL(this.qt)
-  def rotateR():QTree[A] = QTreeUtil.rotateR(this.qt)
-  def mapColorEffect(f:Color => Color):QTree[A] = QTreeUtil.mapColorEffect(f,this.qt)
-  def noise(c: Color):Color = QTreeUtil.noise(c)
+case class QTreeUtil(qt: QTree[Coords]){
+  def scale(scale:Double):QTree[Coords] = QTreeUtil.scale(scale,this.qt)
+  def mirrorV():QTree[Coords] = QTreeUtil.mirrorV(this.qt)
+  def mirrorH():QTree[Coords] = QTreeUtil.mirrorH(this.qt)
+  def rotateL():QTree[Coords] = QTreeUtil.rotateL(this.qt)
+  def rotateR():QTree[Coords] = QTreeUtil.rotateR(this.qt)
+  def mapColorEffect(f:Color => Color):QTree[Coords] = QTreeUtil.mapColorEffect(f,this.qt)
+  def noise(c: Color):Color = QTreeUtil.notPureNoise(c)
   def contrast(c: Color):Color = QTreeUtil.contrast(c)
   def sepia(c: Color):Color = QTreeUtil.sepia(c)
 }
@@ -46,7 +49,7 @@ object QTreeUtil {
     val medium_width = width/2
     val medium_height = height/2
 
-    val matrixToAnalyze = matrix.map()
+    //val matrixToAnalyze = matrix.map()
 
     matrix match{
       case Nil => QEmpty
@@ -64,7 +67,7 @@ object QTreeUtil {
   }
 
   /** Creation of a QTree from a given bitmap. */
-  def makeQTree[A](b:Array[Array[Int]] /*b:BitMap*/):QTree[Coords] = {
+  def makeQTree(b:Array[Array[Int]] /*b:BitMap*/):QTree[Coords] = {
     val matrix = toList(b /*b.value*/)
     val width = matrix.head.length-1
     val height = matrix.length-1
@@ -78,24 +81,41 @@ object QTreeUtil {
 
   /** Magnification/reduction operation on an image, according to the factor provided. */
   //ajustamos as coordenadas mas nao fazemos nada sobre a cor mas em algumas situações necessário (média da cor dos pixeis de grande para pequeno ou gradiente de pequeno para grande)
-  def scale[A](sc: Double, qt: QTree[A]): QTree[A] = {
+  def scale(sc: Double, qt: QTree[Coords]): QTree[Coords] = {
     qt match {
       case QNode(value, one, two, three, four) =>
         QNode(value, scale(sc, one), scale(sc, two), scale(sc, three), scale(sc, four))
       case QLeaf((cd: Coords, color)) =>
+
+        // if (sc < 1) { // preciso de 2 cores para colocar aquando se chama a funcao mediaColor
+        //  QLeaf(((cd._1._1 * sc.round.toInt, cd._1._2 * sc.round.toInt),
+        //  (cd._2._1 * sc.round.toInt, cd._2._2 * sc.round.toInt)), mediaColors(color1, color2))
+        //}
+
         QLeaf(((cd._1._1 * sc.round.toInt, cd._1._2 * sc.round.toInt),
           (cd._2._1 * sc.round.toInt, cd._2._2 * sc.round.toInt)), color)
       case _ => QEmpty
     }
   }
 
+  def averageColor(color1: Color, color2: Color): Color = { //grande para pequeno -> if scale < 1
+    val red = (color1.getRed + color2.getRed) / 2
+    val blue = (color1.getBlue + color2.getBlue) / 2
+    val green = (color1.getGreen + color2.getGreen) / 2
+    new Color(red, green, blue)
+  }
+  def colorGradient(c: Color): Color = { //pequeno para grande -> if scale > X
+    val l = ImageUtil.luminance(c.getRed, c.getBlue, c.getGreen)
+    new Color(c.getRed * l, c.getBlue * l  , c.getGreen * l)
+  }
+
   /** Given a QTree it calculates the max coordinate value. */
-  private def maxTreeCord[A](qt: QTree[A], value: Int): Int = {
+  private def maxTreeCord(qt: QTree[Coords], value: Int): Int = {
     qt match {
       case QLeaf((cd: Coords, _)) =>
         if (value == 1) cd._2._1
         else cd._2._2
-      case QNode(cd: Coords, _, _, _, _) =>
+      case QNode(cd, _, _, _, _) =>
         if (value == 1) cd._2._1
         else cd._2._2
       case _ => 0
@@ -103,28 +123,27 @@ object QTreeUtil {
   }
 
   /** Vertical mirroring operation. */
-  def mirrorV[A](qt: QTree[A]): QTree[A] = {
+  def mirrorV(qt: QTree[Coords]): QTree[Coords] = {
     val max = maxTreeCord(qt, 1)
-    def aux(qt: QTree[A], max: Int): QTree[A] = {
+    def aux(qt: QTree[Coords], max: Int): QTree[Coords] = {
       qt match {
-        case QNode(value, one, two, three, four) =>
-          QNode(value, aux(two, max), aux(one, max), aux(four, max), aux(three, max))
-        case QLeaf((cd: Coords, color)) =>
-          QLeaf(new Coords((max - cd._2._1, cd._1._2), (max - cd._1._1, cd._2._2)), color)
+        case QNode(cd, one, two, three, four) =>
+          QNode(((max - cd._2._1, cd._1._2),(max - cd._1._1, cd._2._2)), aux(two, max), aux(one, max), aux(four, max), aux(three, max))
+        case QLeaf((cd:Coords, color)) =>
+          QLeaf(((max - cd._2._1, cd._1._2), (max - cd._1._1, cd._2._2)), color)
         case _ => QEmpty
       }
     }
     aux(qt, max)
   }
 
-  //fazer tambem para quando os quadrantes sao de tamanho diferente
   /** Horizontal mirroring operation. */
-  def mirrorH[A](qt: QTree[A]): QTree[A] = {
+  def mirrorH(qt: QTree[Coords]): QTree[Coords] = {
     val max = maxTreeCord(qt, 0)
-    def aux(qt: QTree[A], max: Int): QTree[A] = {
+    def aux(qt: QTree[Coords], max: Int): QTree[Coords] = {
       qt match {
-        case QNode(value, one, two, three, four) =>
-          QNode(value, aux(three, max), aux(four, max), aux(one, max), aux(two, max))
+        case QNode(cd, one, two, three, four) =>
+          QNode(((cd._1._1,max - cd._2._2),(cd._2._1,max - cd._1._2)), aux(three, max), aux(four, max), aux(one, max), aux(two, max))
         case QLeaf((cd: Coords, color)) =>
           QLeaf(new Coords((cd._1._1, max - cd._2._2), (cd._2._1, max - cd._1._2)), color)
         case _ => QEmpty
@@ -134,12 +153,12 @@ object QTreeUtil {
   }
 
   /** 90 degree rotation to the left. */
-  def rotateL[A](qt:QTree[A]):QTree[A] = {
+  def rotateL(qt:QTree[Coords]):QTree[Coords] = {
     val max_x = maxTreeCord(qt,1)
-    def aux (qt:QTree[A],max_x:Int):QTree[A] = {
+    def aux (qt:QTree[Coords],max_x:Int):QTree[Coords] = {
       qt match {
-        case QNode(value, one, two, three, four) =>
-          QNode(value, aux(two,max_x), aux(four,max_x), aux(one,max_x), aux(three,max_x))
+        case QNode(cd, one, two, three, four) =>
+          QNode(((cd._1._2,max_x - cd._2._1),(cd._2._2, max_x - cd._1._1)), aux(two,max_x), aux(four,max_x), aux(one,max_x), aux(three,max_x))
         case QLeaf((cd: Coords, color)) =>
           QLeaf(new Coords ((cd._1._2,max_x - cd._2._1),(cd._2._2,max_x - cd._1._1)), color)
         case _ => QEmpty
@@ -149,19 +168,19 @@ object QTreeUtil {
   }
 
   /** 90 degree rotation to the right. */
-  def rotateR[A](qt:QTree[A]):QTree[A] = {
-   val max_y = maxTreeCord(qt,0)
-   def aux (qt:QTree[A],max_y:Int):QTree[A] = {
-     qt match {
-       case QNode(value, one, two, three, four) =>
-          QNode(value, aux(three,max_y), aux(one,max_y), aux(four,max_y), aux(two,max_y))
-       case QLeaf((cd: Coords, color)) =>
+  def rotateR(qt:QTree[Coords]):QTree[Coords] = {
+    val max_y = maxTreeCord(qt,0)
+    def aux (qt:QTree[Coords],max_y:Int):QTree[Coords] = {
+      qt match {
+        case QNode(cd, one, two, three, four) =>
+          QNode(((max_y - cd._2._2, cd._1._1),(max_y - cd._1._2, cd._2._1)), aux(three,max_y), aux(one,max_y), aux(four,max_y), aux(two,max_y))
+        case QLeaf((cd: Coords, color)) =>
           QLeaf(new Coords ((max_y - cd._2._2,cd._1._1),(max_y - cd._1._2,cd._2._1)), color)
-       case _ => QEmpty
-     }
-   }
-   aux(qt,max_y)
- }
+        case _ => QEmpty
+      }
+    }
+    aux(qt,max_y)
+  }
 
   /** Checks whether the given value is valid as an RGB component. */
   private def colorComponentInRange(component: Int): Int = {
@@ -179,7 +198,7 @@ object QTreeUtil {
   }
 
   /** Uniform mapping of a function onto the entire image. */
-  def mapColorEffect[A](f: Color => Color, qt: QTree[A]): QTree[A] = {
+  def mapColorEffect(f: Color => Color, qt: QTree[Coords]): QTree[Coords] = {
     qt match {
       case QNode(value, one, two, three, four) =>
         QNode(value, mapColorEffect(f, three), mapColorEffect(f, one), mapColorEffect(f, four), mapColorEffect(f, two))
@@ -188,9 +207,26 @@ object QTreeUtil {
     }
   }
 
-  /** Obtains the noise value of a RGB color. */
-    //fazer random puro
-  def noise(c: Color): Color = {
+  /** Uniform mapping of a function onto the entire image.
+   * It won't work with contrast, sepia and not pure noise functions. */
+  /*def mapColorEffect_1(f: (Color,MyRandom) => (Color,Double), qt: QTree[Coords]): QTree[Coords] ={
+   qt match {
+      case QNode(value, one, two, three, four) =>
+        QNode(value, mapColorEffect(f, three), mapColorEffect(f, one), mapColorEffect(f, four), mapColorEffect(f, two))
+      case QLeaf((value, color: Color)) => QLeaf((value, f(color,_)))
+      case _ => QEmpty
+    }
+  }*/
+
+  /** Obtains the pure noise value of a RGB color. */
+  /*def pureNoise(c: Color, r: MyRandom): ((Color,Int), Random) = {
+    val (i1,r1) = r.nextInt
+    if(i1 < 0.5) ((Color.black,i1),r1)
+    else ((c,i1),r1)
+  }*/
+
+  /** Obtains the not pure noise value of a RGB color. */
+  def notPureNoise(c: Color): Color = {
     val random = new scala.util.Random
     val noise = random.nextFloat
     if (noise < 0.5) Color.black
@@ -217,5 +253,4 @@ object QTreeUtil {
     val blue = colorComponentInRange(c.getBlue - intensity)
     new Color(red, green, blue)
   }
-
 }
