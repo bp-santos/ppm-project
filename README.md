@@ -51,9 +51,7 @@ type Point = (Int, Int)
 type Coords = (Point, Point)
 type Section = (Coords, Color)
 trait QTree[+A]
-case class QNode[A](value: A,
-					one: QTree[A], two: QTree[A],
-					three: QTree[A], four: QTree[A]) extends QTree[A]
+case class QNode[A](value: A, one: QTree[A], two: QTree[A], three: QTree[A], four: QTree[A]) extends QTree[A]
 case class QLeaf[A, B](value: B) extends QTree[A]
 case object QEmpty extends QTree[Nothing]
 ```
@@ -65,11 +63,3 @@ A cada nó e cada secção (folha) de uma árvore estão associadas duas coorden
 - ImageUtil.java – contendo métodos utilitários para lidar com imagens e cores (útil para ilustrar a transparência de integração destes dois paradigmas). Único código Java do projeto juntamente com uso do java.io.FileInputStream;
 - objc2_2.png – imagem com 4 pixéis (dimensão 2 por 2) que pode ser utilizada para os testes iniciais. O método readColorImage da classe ImageUtil.java pode ser utilizado para transformar a imagem em Array[Array[Int]] e, posteriormente, transformado em List[List[Int]] antes de ser transformada numa *QTree*. O método writeImage da classe ImageUtil.java pode ser utilizado para gravar a matriz de Int de volta ao formato png;
 - info.txt – contendo um exemplo de uma QTree[Coords].
-
-#### Exemplo de Divisão de uma Imagem em Quadrantes
-
-A raiz da árvore representa a imagem representada via *quadtree*.
-
-![image-20210401144522893](C:\Users\bphsa\AppData\Roaming\Typora\typora-user-images\image-20210401144522893.png)
-
-Figura 1 – Representação gráfica e respetiva representação em árvore simplificada de um *quadtree*
