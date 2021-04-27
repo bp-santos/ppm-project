@@ -9,11 +9,6 @@ object Main extends App {
 
     val qt: QTree[Coords] = QNode(((0,0),(2,3)), l1, l2, l3, l4)
 
-    //val bm: Array[Array[Int]] = ImageUtil.readColorImage("objc2_2.png")
-    //println(QTreeUtil.makeQTree(bm))
-
-    println(qt)
-    println(QTreeUtil.rotateR(qt))
-
-
+    val bm: BitMap = BitMap(ImageUtil.readColorImage("objc2_2.png"))
+    println(QTreeUtil.makeQTree(bm))
 }

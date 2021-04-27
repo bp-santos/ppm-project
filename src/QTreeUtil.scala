@@ -1,5 +1,4 @@
 import QTreeUtil.Coords
-
 import java.awt.Color
 import scala.annotation.tailrec
 import scala.util.Random
@@ -27,21 +26,23 @@ object QTreeUtil {
     else (matrix map (_.toList)) toList
   }
 
-  private def equalColorList(lst: List[Int]) : Boolean = lst.distinct.length == 1
-
   @tailrec
   private def equalColor(matrix:List[List[Int]]) : Boolean = {
     matrix match {
       case Nil => true
-      case x::xs => equalColorList(x) && equalColor(xs)
+      case x::xs => x.distinct.length == 1 && equalColor(xs)
     }
   }
 
-  //quando temos apenas um pixel sabemos que é uma folha
-  //pensar para quando é impar (somos nos a decidir qual dos quadrantes o maior)
-  //qnode com 2 subarvores tem de ter dois empty
-  //nao percorrer varias vezes pixeis ja percorridos
-  private def convertToQuadrants[A](matrix:List[List[Int]], cords: Coords):QTree[Coords] = {
+  private def getQuadrant(matrix:List[List[Int]], cords:Coords):List[List[Int]] = {
+    if (cords._1 == cords._2) {
+      List(List(matrix(cords._2._1)(cords._2._2)))
+    } else {
+      matrix.splitAt(cords._1._2)._2.splitAt(cords._2._2)._1.map(_.splitAt(cords._1._1)._2.splitAt(cords._2._1)._1)
+    }
+  }
+
+  private def convertToQuadrants(matrix:List[List[Int]], cords: Coords):QTree[Coords] = {
     val ini_x = cords._1._1
     val ini_y = cords._1._2
     val width = cords._2._1
@@ -49,28 +50,26 @@ object QTreeUtil {
     val medium_width = width/2
     val medium_height = height/2
 
-    //val matrixToAnalyze = matrix.map()
-
     matrix match{
       case Nil => QEmpty
       case _ =>
-        if (equalColor(matrix)) QLeaf((cords, ImageUtil.decodeRgb(matrix.head.head)))
-        else /*if (width % 2 == 0 && height % 2 == 0) {*/
+        if (equalColor(getQuadrant(matrix,cords))){
+          val c = ImageUtil.decodeRgb(getQuadrant(matrix,cords).head.head).toList
+          QLeaf((cords, new Color (c(0),c(1),c(2))))
+        }
+        else
           QNode(cords, convertToQuadrants(matrix, (cords._1, (medium_width, medium_height))),
             convertToQuadrants(matrix, ((medium_width, ini_y), (width, medium_height))),
             convertToQuadrants(matrix, ((ini_x, medium_height), (medium_width, height))),
             convertToQuadrants(matrix, ((medium_width, medium_height), cords._2)))
-      //else{
-      //  QNode(cords, convertToQuadrants(matrix, ((,),(,)) ), convertToQuadrants(matrix, ((,),(,)) ), convertToQuadrants(matrix, ((,),(,)) ), convertToQuadrants(matrix, ((,),(,)) ))
-      //}
     }
   }
 
   /** Creation of a QTree from a given bitmap. */
-  def makeQTree(b:Array[Array[Int]] /*b:BitMap*/):QTree[Coords] = {
-    val matrix = toList(b /*b.value*/)
-    val width = matrix.head.length-1
-    val height = matrix.length-1
+  def makeQTree(b:BitMap):QTree[Coords] = {
+    val matrix = toList(b.value)
+    val width = matrix.head.length
+    val height = matrix.length
     convertToQuadrants(matrix,((0,0),(width,height)))
   }
 
