@@ -1,1 +1,1 @@
-/*sealed*/ trait QTree[+A]
+trait QTree[+A]

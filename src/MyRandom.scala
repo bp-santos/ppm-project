@@ -1,5 +1,3 @@
-import scala.util.Random
-
 trait Random {
   def nextInt: (Int, Random)
   def nextInt(x:Int): (Int, Random)

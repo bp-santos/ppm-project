@@ -1,1 +1,1 @@
-case class BitMap(value: Array[Array[Int]])
+trait BitMap[+A]

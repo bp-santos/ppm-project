@@ -4,6 +4,8 @@ import scala.annotation.tailrec
 import scala.util.Random
 
 case class QTreeUtil(qt: QTree[Coords]){
+  def makeQTree(b:BitMap[Int]):QTree[Coords] = QTreeUtil.makeQTree(b)
+  def makeBitMap():BitMap[Int] = QTreeUtil.makeBitMap(this.qt)
   def scale(scale:Double):QTree[Coords] = QTreeUtil.scale(scale,this.qt)
   def mirrorV():QTree[Coords] = QTreeUtil.mirrorV(this.qt)
   def mirrorH():QTree[Coords] = QTreeUtil.mirrorH(this.qt)
@@ -55,7 +57,7 @@ object QTreeUtil {
       case _ =>
         if (equalColor(getQuadrant(matrix,cords))){
           val c = ImageUtil.decodeRgb(getQuadrant(matrix,cords).head.head).toList
-          QLeaf((cords, new Color (c(0),c(1),c(2))))
+          QLeaf((cords, new Color (c.head,c(1),c(2))))
         }
         else
           QNode(cords, convertToQuadrants(matrix, (cords._1, (medium_width, medium_height))),
@@ -66,17 +68,32 @@ object QTreeUtil {
   }
 
   /** Creation of a QTree from a given bitmap. */
-  def makeQTree(b:BitMap):QTree[Coords] = {
-    val matrix = toList(b.value)
-    val width = matrix.head.length
-    val height = matrix.length
-    convertToQuadrants(matrix,((0,0),(width,height)))
+  def makeQTree(b:BitMap[Int]):QTree[Coords] = {
+    b match {
+      case BitEmpty => QEmpty
+      case ColorMap(value) =>{
+        val matrix = toList(value)
+        val width = matrix.head.length
+        val height = matrix.length
+        convertToQuadrants(matrix,((0,0),(width,height)))
+      }
+    }
+  }
+
+  //percorrer, cada vez que encontra uma folha retira as coordenadas e depois pinta da mesma cor
+  //matriz imutavel
+  private def paintCords (cd: Coords, color: Color):BitMap[Int] = {
+
   }
 
   /** Creation of a BitMap from a given QTree. */
-  //percorrer, cda vez que encontra uma folha retira as coordenadas e depois pinta da mesma cor
-  //matriz imutavel
-  //def makeBitMap[A](qt:QTree[A]):BitMap = {}
+  def makeBitMap(qt:QTree[Coords]):BitMap[Int] = {
+    qt match {
+      case QLeaf((cd:Coords,color:Color)) => paintCords(cd,color)
+      case QNode(_, one, two, three, four) => makeBitMap(one)::makeBitMap(two)::makeBitMap(three)::makeBitMap(four)
+      case _ => BitEmpty
+    }
+  }
 
   /** Magnification/reduction operation on an image, according to the factor provided. */
   //ajustamos as coordenadas mas nao fazemos nada sobre a cor mas em algumas situações necessário (média da cor dos pixeis de grande para pequeno ou gradiente de pequeno para grande)
