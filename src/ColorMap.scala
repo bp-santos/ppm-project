@@ -1,1 +1,0 @@
-case class ColorMap[A](value: Array[Array[A]]) extends BitMap[A]
