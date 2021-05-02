@@ -53,15 +53,15 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="133.0" text="Change Album Info" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
-      <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="133.0" text="Change Album Order" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
+      <Button mnemonicParsing="false" onMouseClicked="#changeAlbumInfo" prefHeight="26.0" prefWidth="133.0" text="Change Album Info" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+      <Button mnemonicParsing="false" onMouseClicked="#changeAlbumOrder" prefHeight="26.0" prefWidth="133.0" text="Change Album Order" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
       <Button mnemonicParsing="false" onMouseClicked="#findPhotoInAlbum" prefHeight="26.0" prefWidth="133.0" text="Find Photo" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
       <Button mnemonicParsing="false" onMouseClicked="#removePhotoFromAlbum" prefHeight="26.0" prefWidth="133.0" text="Remove Photo" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" />
       <Button fx:id="addPhoto" mnemonicParsing="false" onMouseClicked="#addPhotoToAlbum" prefHeight="26.0" prefWidth="133.0" text="Add Photo" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="9" />
-      <TextField promptText="insert new name for album" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+      <TextField fx:id="insertNameChange" promptText="insert new name " GridPane.columnIndex="2" GridPane.rowIndex="5" />
       <TextField fx:id="photoNameFind" promptText="insert photo name" GridPane.columnIndex="2" GridPane.rowIndex="7" />
       <TextField fx:id="photoNameRemove" promptText="insert photo name" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-      <TextField fx:id="photoNameAdd" promptText="insert photo path" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-      <RadioButton contentDisplay="RIGHT" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="232.0" text="Reverse order" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <TextField fx:id="photoNameAdd" prefHeight="26.0" prefWidth="92.0" promptText="insert photo name" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+      <RadioButton fx:id="reverseOrder" contentDisplay="RIGHT" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="232.0" text="Reverse order" GridPane.columnIndex="2" GridPane.rowIndex="6" />
    </children>
 </GridPane>
