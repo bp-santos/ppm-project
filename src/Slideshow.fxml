@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gallery">
+   <children>
+      <AnchorPane layoutX="120.0" layoutY="24.0" prefHeight="362.0" prefWidth="318.0">
+         <children>
+            <ImageView fitHeight="360.0" fitWidth="360.0" layoutY="1.0" pickOnBounds="true">
+               <image>
+                  <Image url="@Images/icon_gallery.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Button fx:id="previousButton" layoutX="27.0" layoutY="179.0" mnemonicParsing="false" onMouseClicked="#onPreviousButtonClicked" prefHeight="42.0" prefWidth="64.0" text="Previous" />
+      <Button fx:id="nextButton" layoutX="509.0" layoutY="179.0" mnemonicParsing="false" onMouseClicked="#onNextButtonClicked" prefHeight="42.4" prefWidth="64.0" text="Next" />
+   </children>
+</AnchorPane>

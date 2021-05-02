@@ -1,6 +1,5 @@
 import QTree.Coords
 import java.awt.Color
-import scala.util.Random
 
 case class QTreeUtil(qt: QTree[Coords]) {
   def scale(scale: Double): QTree[Coords] = QTreeUtil.scale(scale, this.qt)
@@ -71,7 +70,6 @@ object QTreeUtil {
   /** Vertical mirroring operation. */
   def mirrorV(qt: QTree[Coords]): QTree[Coords] = {
     val max = maxTreeCord(qt, 1)
-
     def aux(qt: QTree[Coords], max: Int): QTree[Coords] = {
       qt match {
         case QNode(cd, one, two, three, four) =>
@@ -81,14 +79,12 @@ object QTreeUtil {
         case _ => QEmpty
       }
     }
-
     aux(qt, max)
   }
 
   /** Horizontal mirroring operation. */
   def mirrorH(qt: QTree[Coords]): QTree[Coords] = {
     val max = maxTreeCord(qt, 0)
-
     def aux(qt: QTree[Coords], max: Int): QTree[Coords] = {
       qt match {
         case QNode(cd, one, two, three, four) =>
@@ -98,7 +94,6 @@ object QTreeUtil {
         case _ => QEmpty
       }
     }
-
     aux(qt, max)
   }
 
@@ -114,7 +109,6 @@ object QTreeUtil {
         case _ => QEmpty
       }
     }
-
     aux(qt, max_x)
   }
 
@@ -130,7 +124,6 @@ object QTreeUtil {
         case _ => QEmpty
       }
     }
-
     aux(qt, max_y)
   }
 
@@ -160,23 +153,24 @@ object QTreeUtil {
   }
 
   /** Uniform mapping of a function onto the entire image.
-   * It won't work with contrast, sepia and not pure noise functions. */
-  /*def mapColorEffect_1(f: (Color,MyRandom) => (Color,Random), qt: QTree[Coords]): QTree[Coords] ={
-   qt match {
+   * It only works with pureNoise. */
+  var r = MyRandom(2)
+  def mapColorEffect_1(random: Random, qt: QTree[Coords]): QTree[Coords] = {
+    qt match {
       case QNode(value, one, two, three, four) =>
-        QNode(value, mapColorEffect_1(f, three), mapColorEffect_1(f, one), mapColorEffect_1(f, four), mapColorEffect_1(f, two))
-      case QLeaf((value, color: Color)) =>{
-        QLeaf((value, f(color,MyRandom))))
-      }
+        QNode(value, mapColorEffect_1(r, three), mapColorEffect_1(r, one), mapColorEffect_1(r, four), mapColorEffect_1(r, two))
+      case QLeaf((value, color: Color)) => QLeaf((value, pureNoise(color,random)._1))
       case _ => QEmpty
     }
-  }*/
+  }
 
   /** Obtains the pure noise value of a RGB color. */
-  def pureNoise(c: Color, r: MyRandom): (Color, Random) = {
-    val (i1, r1) = r.nextInt(2)
-    if (i1 == 1) (Color.black, r1)
-    else (c, r1)
+  def pureNoise(c: Color, r: Random): (Color, Random) = {
+    val i = r.nextInt(2)
+    i._1 match {
+      case 0 => (c,i._2)
+      case 1 => (Color.black,i._2)
+    }
   }
 
   /** Obtains the not pure noise value of a RGB color. */

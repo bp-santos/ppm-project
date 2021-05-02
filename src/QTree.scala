@@ -44,48 +44,51 @@ object QTree {
       case Nil => QEmpty
       case _ =>
         val quadrant = getQuadrant(matrix, cords)
-        if (concatMultiDimensionalList(quadrant) != List()) {
-          if (equalColor(quadrant, quadrant.head.head)) {
-            val c = ImageUtil.decodeRgb(quadrant.head.head).toList
-            QLeaf((cords, new Color(c.head, c(1), c(2))))
-          }
-          else {
-            if ((width - ini_x) % 2 == 0 && (height - ini_y) % 2 == 0)
-              QNode(cords, convertToQuadrants(matrix, ((ini_x, ini_y), (medium_width, medium_height))),
-                convertToQuadrants(matrix, ((medium_width, ini_y), (width, medium_height))),
-                convertToQuadrants(matrix, ((ini_x, medium_height), (medium_width, height))),
-                convertToQuadrants(matrix, ((medium_width, medium_height), (width, height))))
-            else if ((width - ini_x) % 2 != 0 && (height - ini_y) % 2 == 0)
-              QNode(cords, convertToQuadrants(matrix, ((ini_x, ini_y), (medium_width + 1, medium_height))),
-                convertToQuadrants(matrix, ((medium_width + 1, ini_y), (width, medium_height))),
-                convertToQuadrants(matrix, ((ini_x, medium_height), (medium_width + 1, height))),
-                convertToQuadrants(matrix, ((medium_width + 1, medium_height), (width, height))))
-            else if ((width - ini_x) % 2 == 0 && (height - ini_y) % 2 != 0)
-              QNode(cords, convertToQuadrants(matrix, ((ini_x, ini_y), (medium_width, medium_height + 1))),
-                convertToQuadrants(matrix, ((medium_width, ini_y), (width, medium_height + 1))),
-                convertToQuadrants(matrix, ((ini_x, medium_height + 1), (medium_width, height))),
-                convertToQuadrants(matrix, ((medium_width, medium_height + 1), (width, height))))
-            else {
-              QNode(cords, convertToQuadrants(matrix, ((ini_x, ini_y), (medium_width + 1, medium_height + 1))),
-                convertToQuadrants(matrix, ((medium_width + 1, ini_y), (width, medium_height + 1))),
-                convertToQuadrants(matrix, ((ini_x, medium_height + 1), (medium_width + 1, height))),
-                convertToQuadrants(matrix, ((medium_width + 1, medium_height + 1), (width, height))))
+        quadrant match {
+          case Nil => QEmpty
+          case _ =>
+            if (equalColor(quadrant, quadrant.head)) {
+              val c = ImageUtil.decodeRgb(quadrant.head).toList
+              QLeaf((cords, new Color(c.head, c(1), c(2))))
             }
-          }
-        } else QEmpty
+            else {
+              if ((width - ini_x) % 2 == 0 && (height - ini_y) % 2 == 0)
+                QNode(cords, convertToQuadrants(matrix, ((ini_x, ini_y), (medium_width, medium_height))),
+                  convertToQuadrants(matrix, ((medium_width, ini_y), (width, medium_height))),
+                  convertToQuadrants(matrix, ((ini_x, medium_height), (medium_width, height))),
+                  convertToQuadrants(matrix, ((medium_width, medium_height), (width, height))))
+              else if ((width - ini_x) % 2 != 0 && (height - ini_y) % 2 == 0)
+                QNode(cords, convertToQuadrants(matrix, ((ini_x, ini_y), (medium_width + 1, medium_height))),
+                  convertToQuadrants(matrix, ((medium_width + 1, ini_y), (width, medium_height))),
+                  convertToQuadrants(matrix, ((ini_x, medium_height), (medium_width + 1, height))),
+                  convertToQuadrants(matrix, ((medium_width + 1, medium_height), (width, height))))
+              else if ((width - ini_x) % 2 == 0 && (height - ini_y) % 2 != 0)
+                QNode(cords, convertToQuadrants(matrix, ((ini_x, ini_y), (medium_width, medium_height + 1))),
+                  convertToQuadrants(matrix, ((medium_width, ini_y), (width, medium_height + 1))),
+                  convertToQuadrants(matrix, ((ini_x, medium_height + 1), (medium_width, height))),
+                  convertToQuadrants(matrix, ((medium_width, medium_height + 1), (width, height))))
+              else {
+                QNode(cords, convertToQuadrants(matrix, ((ini_x, ini_y), (medium_width + 1, medium_height + 1))),
+                  convertToQuadrants(matrix, ((medium_width + 1, ini_y), (width, medium_height + 1))),
+                  convertToQuadrants(matrix, ((ini_x, medium_height + 1), (medium_width + 1, height))),
+                  convertToQuadrants(matrix, ((medium_width + 1, medium_height + 1), (width, height))))
+              }
+            }
+        }
     }
   }
 
-  private def getQuadrant(matrix: List[List[Int]], cords: Coords): List[List[Int]] = {
-    matrix.splitAt(cords._1._2)._2.splitAt(cords._2._2 - cords._1._2)._1.map(_.splitAt(cords._1._1)._2.splitAt(cords._2._1 - cords._1._1)._1)
+  private def getQuadrant(matrix: List[List[Int]], cords: Coords): List[Int] = {
+    val quadrant = matrix.splitAt(cords._1._2)._2.splitAt(cords._2._2 - cords._1._2)._1
+      .map(_.splitAt(cords._1._1)._2.splitAt(cords._2._1 - cords._1._1)._1)
+    concatMultiDimensionalList(quadrant)
   }
 
   @tailrec
-  private def equalColor(matrix: List[List[Int]], c: Int): Boolean = {
-    val lst = concatMultiDimensionalList(matrix)
+  private def equalColor(lst: List[Int], c: Int): Boolean = {
     lst match {
       case Nil => true
-      case x :: xs => if (x.equals(c)) equalColor(List(xs), c) else false
+      case x :: xs => if (x.equals(c)) equalColor(xs, c) else false
     }
   }
 
@@ -95,5 +98,4 @@ object QTree {
       case x :: xs => x ::: concatMultiDimensionalList(xs)
     }
   }
-
 }
