@@ -3,6 +3,7 @@ import javafx.fxml.{FXML, FXMLLoader}
 import javafx.scene.{Parent, Scene}
 import javafx.scene.control.{RadioButton, TextField}
 import javafx.scene.image.{Image, ImageView}
+import javafx.scene.layout.HBox
 import javafx.stage.{FileChooser, Stage}
 
 case class Album(name: String, content: List[(String, QTree[Coords])])
@@ -26,20 +27,11 @@ class Gallery {
   @FXML
   private var insertNameChange: TextField = _
 
-  //@FXML
-  //private var imageView1: ImageView = _
+  @FXML
+  private var oldNameChange: TextField = _
 
-  /*def previousPhoto(album: Album, index: Int): QTree[Coords] = {
-    if (index <= 0 || index > album.content.length - 1)
-      album.content(index)
-    else album.content(index - 1)
-  }
-
-  def nextPhoto(album: Album, index: Int): QTree[Coords] = {
-    if (index < 0 || index >= album.content.length - 1)
-      album.content(index)
-    else album.content(index - 1)
-  }*/
+  @FXML
+  private var newNameChange: TextField = _
 
   def onSlideshowClicked(): Unit = {
     val secondStage: Stage = new Stage()
@@ -52,9 +44,17 @@ class Gallery {
     secondStage.show()
   }
 
-  def onPreviousButtonClicked(): Unit = {}
+  def onPreviousButtonClicked(): Unit = {
+    //if (index <= 0 || index > album.content.length - 1)
+      //album.content(index)
+    //else album.content(index - 1)
+  }
 
-  def onNextButtonClicked(): Unit = {}
+  def onNextButtonClicked(): Unit = {
+    //if (index < 0 || index >= album.content.length - 1)
+      //album.content(index)
+    //else album.content(index - 1)
+  }
 
   def onGridClicked(): Unit = {
     val thirdStage: Stage = new Stage()
@@ -65,6 +65,27 @@ class Gallery {
     thirdStage.getIcons.add(new Image("/images/icon_gallery.png"))
     thirdStage.setScene(scene)
     thirdStage.show()
+  }
+
+  def changePhotoInfo():Unit = {
+    val oldName = oldNameChange.getText
+    val newName = newNameChange.getText
+    if (oldName.isEmpty || oldName.isBlank)
+      System.out.println("Error: Old image name field empty/blank\n")
+    else if (newName.isEmpty || newName.isBlank)
+      System.out.println("Error: New image name field empty/blank\n")
+    else {
+      val index = findIndex(oldNameChange.getText)
+      if (index == -1)
+        System.out.println("Error: Image not found\n")
+      else {
+        album = Album(album.name, (newNameChange.getText, album.content.apply(index)._2) :: album.content)
+        photoNameRemove.setText(oldName)
+        removePhotoFromAlbum()
+        photoNameRemove.setText("")
+        showImage(0)
+      }
+    }
   }
 
   def changeAlbumInfo(): Unit = {
@@ -85,7 +106,6 @@ class Gallery {
     } else System.out.println("Error: Reverse order not selected\n")
   }
 
-  //mostrar imagem encontrada
   def findPhotoInAlbum(): Unit = {
     if (photoNameFind.getText.isEmpty || photoNameFind.getText.isBlank)
       System.out.println("Error: Image name field empty/blank\n")
@@ -99,15 +119,21 @@ class Gallery {
         else {
           println("Success finding photo in album\n")
           println(album.content.apply(index) + "\n")
-          //showImage(index)
+          showImage(index)
         }
       }
     }
   }
 
-  /*def showImage(index: Int): Unit = {
-    imageView1.setImage(new Image())
-  }*/
+  //quando o makeBitMap estiver concluído é necessário alterar esta função
+  def showImage(index: Int): Unit = {
+    val imageName = album.content.apply(index)._1
+    val imageStage: Stage = new Stage()
+    imageStage.setTitle("Image - " + imageName)
+    imageStage.getIcons.add(new Image("/images/icon_gallery.png"))
+    imageStage.setScene(new Scene(new HBox(4, new ImageView(new Image("/Images/icon_gallery.png")))))
+    imageStage.show()
+  }
 
   def removePhotoFromAlbum(): Unit = {
     if (photoNameRemove.getText.isEmpty || photoNameRemove.getText.isBlank)
