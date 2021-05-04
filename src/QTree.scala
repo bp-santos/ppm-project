@@ -27,7 +27,7 @@ object QTree {
     }
   }
 
-  private def toList[A](matrix: Array[Array[A]]): List[List[A]] = {
+  def toList[A](matrix: Array[Array[A]]): List[List[A]] = {
     if (matrix.length == 0 || matrix == null) Nil
     else (matrix map (_.toList)) toList
   }
@@ -39,7 +39,6 @@ object QTree {
     val height = cords._2._2
     val medium_width = (width + ini_x) / 2
     val medium_height = (height + ini_y) / 2
-
     matrix match {
       case Nil => QEmpty
       case _ =>

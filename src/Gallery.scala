@@ -5,12 +5,9 @@ import javafx.scene.control.{RadioButton, TextField}
 import javafx.scene.image.{Image, ImageView}
 import javafx.scene.layout.HBox
 import javafx.stage.{FileChooser, Stage}
-
-case class Album(name: String, content: List[(String, QTree[Coords])])
+import FxApp._
 
 class Gallery {
-
-  var album: Album = Album("Gallery", Nil)
 
   @FXML
   private var photoNameAdd: TextField = _
@@ -33,6 +30,9 @@ class Gallery {
   @FXML
   private var newNameChange: TextField = _
 
+  @FXML
+  private var photoNameEdit: TextField = _
+
   def onSlideshowClicked(): Unit = {
     val secondStage: Stage = new Stage()
     val fxmlLoader = new FXMLLoader(getClass.getResource("Slideshow.fxml"))
@@ -44,18 +44,6 @@ class Gallery {
     secondStage.show()
   }
 
-  def onPreviousButtonClicked(): Unit = {
-    //if (index <= 0 || index > album.content.length - 1)
-      //album.content(index)
-    //else album.content(index - 1)
-  }
-
-  def onNextButtonClicked(): Unit = {
-    //if (index < 0 || index >= album.content.length - 1)
-      //album.content(index)
-    //else album.content(index - 1)
-  }
-
   def onGridClicked(): Unit = {
     val thirdStage: Stage = new Stage()
     val fxmlLoader = new FXMLLoader(getClass.getResource("Grid.fxml"))
@@ -65,6 +53,17 @@ class Gallery {
     thirdStage.getIcons.add(new Image("/images/icon_gallery.png"))
     thirdStage.setScene(scene)
     thirdStage.show()
+  }
+
+  def onManipulateClicked(): Unit = {
+    val fourthStage: Stage = new Stage()
+    val fxmlLoader = new FXMLLoader(getClass.getResource("EditPhoto.fxml"))
+    val mainViewRoot: Parent = fxmlLoader.load()
+    val scene = new Scene(mainViewRoot)
+    fourthStage.setTitle("Edit Image - Projeto de Programação Multiparadigma")
+    fourthStage.getIcons.add(new Image("/images/icon_gallery.png"))
+    fourthStage.setScene(scene)
+    fourthStage.show()
   }
 
   def changePhotoInfo():Unit = {

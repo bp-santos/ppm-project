@@ -23,36 +23,16 @@ case class QTreeUtil(qt: QTree[Coords]) {
 
 object QTreeUtil {
   /** Magnification/reduction operation on an image, according to the factor provided. */
-  //ajustamos as coordenadas mas nao fazemos nada sobre a cor mas em algumas situações necessário (média da cor dos pixeis de grande para pequeno ou gradiente de pequeno para grande)
   def scale(sc: Double, qt: QTree[Coords]): QTree[Coords] = {
     qt match {
       case QNode(value, one, two, three, four) =>
         QNode(value, scale(sc, one), scale(sc, two), scale(sc, three), scale(sc, four))
       case QLeaf((cd: Coords, color)) =>
-
-        // if (sc < 1) { // preciso de 2 cores para colocar aquando se chama a func mediaColor
-        //  QLeaf(((cd._1._1 * sc.round.toInt, cd._1._2 * sc.round.toInt),
-        //  (cd._2._1 * sc.round.toInt, cd._2._2 * sc.round.toInt)), mediaColors(color1, color2))
-        //}
-
         QLeaf(((cd._1._1 * sc.round.toInt, cd._1._2 * sc.round.toInt),
           (cd._2._1 * sc.round.toInt, cd._2._2 * sc.round.toInt)), color)
       case _ => QEmpty
     }
   }
-
-  /*private def averageColor(color1: Color, color2: Color): Color = { //grande para pequeno -> if scale < 1
-    val red = (color1.getRed + color2.getRed) / 2
-    val blue = (color1.getBlue + color2.getBlue) / 2
-    val green = (color1.getGreen + color2.getGreen) / 2
-    new Color(red, green, blue)
-  }*/
-
-  /*private def colorGradient(c1: Color, c2: Color): Color = { //pequeno para grande -> if scale > X
-    val l1 = ImageUtil.luminance(c1.getRed, c1.getBlue, c1.getGreen)
-    val l2 = ImageUtil.luminance(c2.getRed, c2.getBlue, c2.getGreen)
-    new Color(c.getRed * l, c.getBlue * l  , c.getGreen * l)
-  }*/
 
   /** Given a QTree it calculates the max coordinate value. */
   private def maxTreeCord(qt: QTree[Coords], value: Int): Int = {
@@ -70,6 +50,7 @@ object QTreeUtil {
   /** Vertical mirroring operation. */
   def mirrorV(qt: QTree[Coords]): QTree[Coords] = {
     val max = maxTreeCord(qt, 1)
+
     def aux(qt: QTree[Coords], max: Int): QTree[Coords] = {
       qt match {
         case QNode(cd, one, two, three, four) =>
@@ -79,12 +60,14 @@ object QTreeUtil {
         case _ => QEmpty
       }
     }
+
     aux(qt, max)
   }
 
   /** Horizontal mirroring operation. */
   def mirrorH(qt: QTree[Coords]): QTree[Coords] = {
     val max = maxTreeCord(qt, 0)
+
     def aux(qt: QTree[Coords], max: Int): QTree[Coords] = {
       qt match {
         case QNode(cd, one, two, three, four) =>
@@ -94,12 +77,14 @@ object QTreeUtil {
         case _ => QEmpty
       }
     }
+
     aux(qt, max)
   }
 
   /** 90 degree rotation to the left. */
   def rotateL(qt: QTree[Coords]): QTree[Coords] = {
     val max_x = maxTreeCord(qt, 1)
+
     def aux(qt: QTree[Coords], max_x: Int): QTree[Coords] = {
       qt match {
         case QNode(cd, one, two, three, four) =>
@@ -109,12 +94,14 @@ object QTreeUtil {
         case _ => QEmpty
       }
     }
+
     aux(qt, max_x)
   }
 
   /** 90 degree rotation to the right. */
   def rotateR(qt: QTree[Coords]): QTree[Coords] = {
     val max_y = maxTreeCord(qt, 0)
+
     def aux(qt: QTree[Coords], max_y: Int): QTree[Coords] = {
       qt match {
         case QNode(cd, one, two, three, four) =>
@@ -124,6 +111,7 @@ object QTreeUtil {
         case _ => QEmpty
       }
     }
+
     aux(qt, max_y)
   }
 
@@ -154,12 +142,11 @@ object QTreeUtil {
 
   /** Uniform mapping of a function onto the entire image.
    * It only works with pureNoise. */
-  var r = MyRandom(2)
   def mapColorEffect_1(random: Random, qt: QTree[Coords]): QTree[Coords] = {
     qt match {
       case QNode(value, one, two, three, four) =>
-        QNode(value, mapColorEffect_1(r, three), mapColorEffect_1(r, one), mapColorEffect_1(r, four), mapColorEffect_1(r, two))
-      case QLeaf((value, color: Color)) => QLeaf((value, pureNoise(color,random)._1))
+        QNode(value, mapColorEffect_1(random, three), mapColorEffect_1(random, one), mapColorEffect_1(random, four), mapColorEffect_1(random, two))
+      case QLeaf((value, color: Color)) => QLeaf((value, pureNoise(color, random)._1))
       case _ => QEmpty
     }
   }
@@ -168,8 +155,8 @@ object QTreeUtil {
   def pureNoise(c: Color, r: Random): (Color, Random) = {
     val i = r.nextInt(2)
     i._1 match {
-      case 0 => (c,i._2)
-      case 1 => (Color.black,i._2)
+      case 0 => (c, i._2)
+      case 1 => (Color.black, i._2)
     }
   }
 

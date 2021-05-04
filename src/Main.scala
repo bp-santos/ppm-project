@@ -9,6 +9,5 @@ object Main extends App {
 
   val qt: QTree[Coords] = QNode(((0, 0), (2, 3)), l1, l2, l3, l4)
 
-  val bm: ColorMap[Int] = ColorMap(ImageUtil.readColorImage(getClass.getResource("/Images/icon_gallery.png").getPath))
-  println(QTree.makeQTree(bm))
+  UserInterface.init()
 }
