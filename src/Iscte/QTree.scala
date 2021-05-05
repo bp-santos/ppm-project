@@ -1,3 +1,5 @@
+package Iscte
+
 import java.awt.Color
 import scala.annotation.tailrec
 

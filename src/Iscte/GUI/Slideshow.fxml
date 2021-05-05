@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Slideshow">
+<GridPane fx:id="grid" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Iscte.GUI.Slideshow">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="193.0" minWidth="10.0" prefWidth="90.6" />
     <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="432.20003051757806" minWidth="10.0" prefWidth="416.4" />
@@ -18,11 +18,7 @@
    <children>
       <AnchorPane prefHeight="408.0" prefWidth="416.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <ImageView fx:id="imageView1" fitHeight="360.0" fitWidth="360.0" layoutX="28.0" layoutY="1.0" nodeOrientation="INHERIT" pickOnBounds="true">
-               <image>
-                  <Image url="@icon_gallery.png" />
-               </image>
-            </ImageView>
+            <ImageView fx:id="actualImage" fitHeight="360.0" fitWidth="360.0" layoutX="28.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
       <Button fx:id="previousButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onPreviousButtonClicked" prefHeight="42.0" prefWidth="64.0" text="Previous" GridPane.rowIndex="1" />

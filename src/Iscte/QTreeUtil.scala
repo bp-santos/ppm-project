@@ -1,4 +1,7 @@
-import QTree.Coords
+package Iscte
+
+import Iscte.QTree.Coords
+
 import java.awt.Color
 
 case class QTreeUtil(qt: QTree[Coords]) {

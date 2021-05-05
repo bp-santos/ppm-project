@@ -1,4 +1,7 @@
-import QTree.Coords
+package Iscte
+
+import Iscte.QTree.Coords
+
 import java.awt.Color
 
 case class BitMap(value: Array[Array[Int]])

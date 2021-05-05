@@ -1,6 +1,8 @@
-import QTree._
-import QTreeUtil._
-import java.io._
+package Iscte
+
+import Iscte.QTree._
+import Iscte.QTreeUtil._
+import java.io.File
 import java.util.Scanner
 import scala.annotation.tailrec
 import scala.util.{Failure, Success, Try}
@@ -9,7 +11,7 @@ object UserInterface {
   def init(): Unit = {
     println("Qual a imagem que deseja manipular?")
     println("\nImagens: ")
-    val images = new File(getClass.getResource("/Images").getPath).listFiles.map(_.getName).toList
+    val images = new File(getClass.getResource("/Iscte/Images").getPath).listFiles.map(_.getName).toList
     print(images + "\n\nInput: ")
     val scanner = new Scanner(System.in)
     val file = scanner.nextLine()
@@ -23,7 +25,7 @@ object UserInterface {
 
   @tailrec
   private def menu(scanner: Scanner, file: String): Unit = {
-    val image = QTree.makeQTree(BitMap(ImageUtil.readColorImage(getClass.getResource("/Images/" + file).getPath)))
+    val image = QTree.makeQTree(BitMap(ImageUtil.readColorImage(getClass.getResource("/Iscte/Images/" + file).getPath)))
     println("\nOriginal: " + image)
     print("\nMenu: " +
       "\n1 - Aplicar scale" +

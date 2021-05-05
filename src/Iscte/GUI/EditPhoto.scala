@@ -1,3 +1,6 @@
+package Iscte.GUI
+
+import Iscte._
 import QTree._
 import javafx.fxml.FXML
 import javafx.scene.control.TextField
@@ -39,45 +42,45 @@ class EditPhoto {
         case "original" =>
           this.qt = album.content.apply(index)._2
           val bm: BitMap = BitMap.makeBitMap(this.qt)
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "scale" =>
           this.qt = QTreeUtil.scale(3, this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt) //fazer variações
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "mirrorV" =>
           this.qt = QTreeUtil.mirrorV(this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt)
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "mirrorH" =>
           this.qt = QTreeUtil.mirrorH(this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt)
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "rotateL" =>
           this.qt = QTreeUtil.rotateL(this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt)
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "rotateR" =>
           this.qt = QTreeUtil.rotateR(this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt)
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "pureNoise" =>
           this.qt = QTreeUtil.mapColorEffect_1(MyRandom(2), this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt)
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "noise" =>
           this.qt = QTreeUtil.mapColorEffect(QTreeUtil.notPureNoise, this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt)
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "contrast" =>
           this.qt = QTreeUtil.mapColorEffect(QTreeUtil.contrast, this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt)
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "sepia" =>
           this.qt = QTreeUtil.mapColorEffect(QTreeUtil.sepia, this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt)
-          ImageUtil.writeImage(bm.value, "src/temp/temp.png", "png")
+          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
       }
-      val file = new File("src/temp/temp.png")
+      val file = new File("src/Iscte/temp/temp.png")
       val isImage = new FileInputStream(file)
       imageView1.setImage(new Image(isImage))
     }
@@ -105,7 +108,7 @@ class EditPhoto {
 
   def savePhoto(): Unit = {
     val bt: BitMap = BitMap.makeBitMap(this.qt)
-    ImageUtil.writeImage(bt.value, "src/Images/new_" + photoName.getText, "png")
+    ImageUtil.writeImage(bt.value, "src/Iscte/Images/new_" + photoName.getText, "png")
     this.qt match {
       case QEmpty => album = album
       case _ =>
