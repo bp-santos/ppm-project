@@ -51,8 +51,8 @@ type Point = (Int, Int)
 type Coords = (Point, Point)
 type Section = (Coords, Color)
 trait QTree[+A]
-case class QNode[A](value: A, one: QTree[A], 
-     two: QTree[A], three: QTree[A], four: QTree[A]) extends QTree[A]
+case class QNode[A](value: A, one: QTree[A],
+                    two: QTree[A], three: QTree[A], four: QTree[A]) extends QTree[A]
 case class QLeaf[A, B](value: B) extends QTree[A]
 case object QEmpty extends QTree[Nothing]
 ```
