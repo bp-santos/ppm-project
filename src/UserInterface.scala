@@ -23,7 +23,7 @@ object UserInterface {
 
   @tailrec
   private def menu(scanner: Scanner, file: String): Unit = {
-    val image = QTree.makeQTree(ColorMap(ImageUtil.readColorImage(getClass.getResource("/Images/" + file).getPath)))
+    val image = QTree.makeQTree(BitMap(ImageUtil.readColorImage(getClass.getResource("/Images/" + file).getPath)))
     println("\nOriginal: " + image)
     print("\nMenu: " +
       "\n1 - Aplicar scale" +

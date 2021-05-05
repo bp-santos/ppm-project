@@ -9,5 +9,10 @@ object Main extends App {
 
   val qt: QTree[Coords] = QNode(((0, 0), (2, 3)), l1, l2, l3, l4)
 
+  //val ar: Array[Array[Int]] = ImageUtil.readColorImage("src/Images/icon_gallery.png")
+  //val qt1: QTree[Coords] = QTree.makeQTree(BitMap(ar))
+  //val bt: BitMap = BitMap.makeBitMap(qt1)
+  //ImageUtil.writeImage(bt.value,"src/temp/temp.png","png")
+
   UserInterface.init()
 }

@@ -2,8 +2,6 @@ import QTree.Coords
 import javafx.fxml.{FXML, FXMLLoader}
 import javafx.scene.{Parent, Scene}
 import javafx.scene.control.{RadioButton, TextField}
-import javafx.scene.image.{Image, ImageView}
-import javafx.scene.layout.HBox
 import javafx.stage.{FileChooser, Stage}
 import FxApp._
 
@@ -30,16 +28,13 @@ class Gallery {
   @FXML
   private var newNameChange: TextField = _
 
-  @FXML
-  private var photoNameEdit: TextField = _
-
   def onSlideshowClicked(): Unit = {
     val secondStage: Stage = new Stage()
     val fxmlLoader = new FXMLLoader(getClass.getResource("Slideshow.fxml"))
     val mainViewRoot: Parent = fxmlLoader.load()
     val scene = new Scene(mainViewRoot)
     secondStage.setTitle("Slideshow - Projeto de Programação Multiparadigma")
-    secondStage.getIcons.add(new Image("/images/icon_gallery.png"))
+    //secondStage.getIcons.add(new Image("/images/icon_gallery.png"))
     secondStage.setScene(scene)
     secondStage.show()
   }
@@ -50,7 +45,7 @@ class Gallery {
     val mainViewRoot: Parent = fxmlLoader.load()
     val scene = new Scene(mainViewRoot)
     thirdStage.setTitle("Grid - Projeto de Programação Multiparadigma")
-    thirdStage.getIcons.add(new Image("/images/icon_gallery.png"))
+    //thirdStage.getIcons.add(new Image("/images/icon_gallery.png"))
     thirdStage.setScene(scene)
     thirdStage.show()
   }
@@ -61,24 +56,29 @@ class Gallery {
     val mainViewRoot: Parent = fxmlLoader.load()
     val scene = new Scene(mainViewRoot)
     fourthStage.setTitle("Edit Image - Projeto de Programação Multiparadigma")
-    fourthStage.getIcons.add(new Image("/images/icon_gallery.png"))
+    //fourthStage.getIcons.add(new Image("/images/icon_gallery.png"))
     fourthStage.setScene(scene)
     fourthStage.show()
   }
 
-  def changePhotoInfo():Unit = {
-    val oldName = oldNameChange.getText
+  private def findIndex(name: String): Int = {
+    val lst = album.content.map(_._1)
+    lst.indexWhere(element => element == name)
+  }
+
+  def changePhotoInfo(): Unit = {
     val newName = newNameChange.getText
+    val oldName = oldNameChange.getText
     if (oldName.isEmpty || oldName.isBlank)
       System.out.println("Error: Old image name field empty/blank\n")
     else if (newName.isEmpty || newName.isBlank)
       System.out.println("Error: New image name field empty/blank\n")
     else {
-      val index = findIndex(oldNameChange.getText)
+      val index = findIndex(oldName)
       if (index == -1)
         System.out.println("Error: Image not found\n")
       else {
-        album = Album(album.name, (newNameChange.getText, album.content.apply(index)._2) :: album.content)
+        album = Album(album.name, (newName, album.content.apply(index)._2) :: album.content)
         photoNameRemove.setText(oldName)
         removePhotoFromAlbum()
         photoNameRemove.setText("")
@@ -88,10 +88,11 @@ class Gallery {
   }
 
   def changeAlbumInfo(): Unit = {
-    if (insertNameChange.getText.isEmpty || insertNameChange.getText.isBlank)
+    val newName = insertNameChange.getText
+    if (newName.isEmpty || newName.isBlank)
       System.out.println("Error: Image name field empty/blank\n")
     else {
-      album = Album(insertNameChange.getText, album.content)
+      album = Album(newName, album.content)
       println(album + "\n")
     }
   }
@@ -106,13 +107,14 @@ class Gallery {
   }
 
   def findPhotoInAlbum(): Unit = {
-    if (photoNameFind.getText.isEmpty || photoNameFind.getText.isBlank)
+    val photo = photoNameFind.getText
+    if (photo.isEmpty || photo.isBlank)
       System.out.println("Error: Image name field empty/blank\n")
     else {
       if (album.content == Nil || album.content == List())
         System.out.println("Error: Album content is empty\n")
       else {
-        val index = findIndex(photoNameFind.getText)
+        val index = findIndex(photo)
         if (index == -1)
           System.out.println("Error: Image not found\n")
         else {
@@ -129,19 +131,20 @@ class Gallery {
     val imageName = album.content.apply(index)._1
     val imageStage: Stage = new Stage()
     imageStage.setTitle("Image - " + imageName)
-    imageStage.getIcons.add(new Image("/images/icon_gallery.png"))
-    imageStage.setScene(new Scene(new HBox(4, new ImageView(new Image("/Images/icon_gallery.png")))))
+    //imageStage.getIcons.add(new Image("/images/icon_gallery.png"))
+    //imageStage.setScene(new Scene(new HBox(4, new ImageView(new Image("/icon_gallery.png")))))
     imageStage.show()
   }
 
   def removePhotoFromAlbum(): Unit = {
-    if (photoNameRemove.getText.isEmpty || photoNameRemove.getText.isBlank)
+    val photo = photoNameRemove.getText
+    if (photo.isEmpty || photo.isBlank)
       System.out.println("Error: Image name field empty/blank\n")
     else {
       if (album.content == Nil || album.content == List())
         System.out.println("Error: Album content is empty\n")
       else {
-        val index = findIndex(photoNameRemove.getText)
+        val index = findIndex(photo)
         if (index == -1)
           System.out.println("Error: Image not found\n")
         else {
@@ -153,23 +156,18 @@ class Gallery {
     }
   }
 
-  private def findIndex(name: String): Int = {
-    val lst = album.content.map(_._1)
-    lst.indexWhere(element => element == name)
-  }
-
   def addPhotoToAlbum(): Unit = {
+    val photo = photoNameAdd.getText
     val path = insertPhotoPath()
     if (path.isEmpty || path.isBlank || path == null)
       System.out.println("Error: Image path field empty/blank\n")
-    else if (photoNameAdd.getText.isEmpty || photoNameAdd.getText.isBlank)
+    else if (photo.isEmpty || photo.isBlank)
       System.out.println("Error: Image name field empty/blank\n")
     else {
-      val bm: ColorMap[Int] = ColorMap(ImageUtil.readColorImage(path))
-      val qt: QTree[Coords] = QTree.makeQTree(bm)
+      val qt: QTree[Coords] = QTree.makeQTree(BitMap(ImageUtil.readColorImage(path)))
       album.content match {
-        case Nil => album = Album(album.name, List((photoNameAdd.getText, qt)))
-        case _ => album = Album(album.name, (photoNameAdd.getText, qt) :: album.content)
+        case Nil => album = Album(album.name, List((photo, qt)))
+        case _ => album = Album(album.name, (photo, qt) :: album.content)
       }
       println("Success saving photo to album\n")
       println(album + "\n")

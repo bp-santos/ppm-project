@@ -16,14 +16,14 @@ object QTree {
   type Section = (Coords, Color)
 
   /** Creation of a QTree from a given bitmap. */
-  def makeQTree(b: BitMap[Int]): QTree[Coords] = {
+  def makeQTree(b: BitMap): QTree[Coords] = {
     b match {
-      case BitEmpty => QEmpty
-      case ColorMap(value) =>
+      case BitMap(value) =>
         val matrix = toList(value)
         val width = matrix.head.length
         val height = matrix.length
         convertToQuadrants(matrix, ((0, 0), (width, height)))
+      case _ => QEmpty
     }
   }
 
