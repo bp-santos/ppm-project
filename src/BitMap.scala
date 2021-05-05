@@ -30,7 +30,7 @@ object BitMap {
       else if (l2.isEmpty) l1
       else if (acc == size - 1)
         l1(acc) ++ l2(acc) :: Nil
-       else
+      else
         l1(acc) ++ l2(acc) :: aux(acc + 1, size)
     }
 
@@ -56,7 +56,7 @@ object BitMap {
   }
 
   def makeListX(size: Int, c: Color): List[Int] = {
-    size match{
+    size match {
       case 1 => List(encodeRGB(c))
       case _ => encodeRGB(c) :: makeListX(size - 1, c)
     }

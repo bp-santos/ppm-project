@@ -134,7 +134,7 @@ object QTreeUtil {
   def mapColorEffect(f: Color => Color, qt: QTree[Coords]): QTree[Coords] = {
     qt match {
       case QNode(value, one, two, three, four) =>
-        QNode(value, mapColorEffect(f, three), mapColorEffect(f, one), mapColorEffect(f, four), mapColorEffect(f, two))
+        QNode(value, mapColorEffect(f, one), mapColorEffect(f, two), mapColorEffect(f, three), mapColorEffect(f, four))
       case QLeaf((value, color: Color)) => QLeaf((value, f(color)))
       case _ => QEmpty
     }
@@ -145,7 +145,7 @@ object QTreeUtil {
   def mapColorEffect_1(random: Random, qt: QTree[Coords]): QTree[Coords] = {
     qt match {
       case QNode(value, one, two, three, four) =>
-        QNode(value, mapColorEffect_1(random, three), mapColorEffect_1(random, one), mapColorEffect_1(random, four), mapColorEffect_1(random, two))
+        QNode(value, mapColorEffect_1(random, one), mapColorEffect_1(random, two), mapColorEffect_1(random, three), mapColorEffect_1(random, four))
       case QLeaf((value, color: Color)) => QLeaf((value, pureNoise(color, random)._1))
       case _ => QEmpty
     }

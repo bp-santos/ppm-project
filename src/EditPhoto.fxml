@@ -29,12 +29,12 @@
       <Button mnemonicParsing="false" onMouseClicked="#mirroHPhoto" prefHeight="26.0" prefWidth="71.0" text="MirrorH" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Button mnemonicParsing="false" onMouseClicked="#rotateLPhoto" prefHeight="26.0" prefWidth="71.0" text="RotateL" GridPane.rowIndex="2" />
       <Button mnemonicParsing="false" onMouseClicked="#rotateRPhoto" prefHeight="26.0" prefWidth="71.0" text="RotateR" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Button mnemonicParsing="false" onContextMenuRequested="#contrastPhoto" prefHeight="26.0" prefWidth="71.0" text="Contrast" GridPane.rowIndex="4" />
+      <Button mnemonicParsing="false" onMouseClicked="#contrastPhoto" prefHeight="26.0" prefWidth="71.0" text="Contrast" GridPane.rowIndex="4" />
       <Button mnemonicParsing="false" onMouseClicked="#originalPhoto" prefHeight="26.0" prefWidth="71.0" text="Original" />
-      <Button mnemonicParsing="false" onContextMenuRequested="#sepiaPhoto" prefHeight="26.0" prefWidth="71.0" text="Sepia" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Button mnemonicParsing="false" onMouseClicked="#sepiaPhoto" prefHeight="26.0" prefWidth="71.0" text="Sepia" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <Button mnemonicParsing="false" onMouseClicked="#pureNoisePhoto" prefHeight="26.0" prefWidth="71.0" text="PureNoise" GridPane.rowIndex="3" />
-      <Button mnemonicParsing="false" onContextMenuRequested="#noisePhoto" prefHeight="26.0" prefWidth="71.0" text="Noise" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextField fx:id="photoName" alignment="CENTER" prefHeight="26.0" prefWidth="440.0" promptText="insert photo name" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
-      <Button mnemonicParsing="false" onContextMenuRequested="#savePhoto" prefHeight="26.0" prefWidth="150.0" text="Save Photo" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+      <Button mnemonicParsing="false" onMouseClicked="#noisePhoto" prefHeight="26.0" prefWidth="71.0" text="Noise" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="photoName" alignment="CENTER" prefHeight="26.0" prefWidth="440.0" promptText="example: &quot;5x4px.png&quot;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+      <Button mnemonicParsing="false" onMouseClicked="#savePhoto" prefHeight="26.0" prefWidth="150.0" text="Save Photo" GridPane.columnIndex="2" GridPane.rowIndex="4" />
     </children>
 </GridPane>
