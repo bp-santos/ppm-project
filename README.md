@@ -36,13 +36,13 @@ As *quadtrees* proporcionam um terceiro método: uma otimização dos bitmaps em
 #### Tarefas
 
 Pretende-se escrever os seguintes métodos:
-**T1.** makeQTree(b:BitMap):QTree criação de uma *quadtree* a partir de um bitmap fornecido e método oposto i.e. para transformar uma quadtree num bitmap;
-**T2.** scale(scale:Double, qt:QTree):QTree operação de ampliação/redução de uma imagem, segundo o fator fornecido (por exemplo 1.5 ampliará a imagem aumentando ambos os seus lados em 50%);
-**T3.** mirrorV / mirrorH (qt:QTree):QTree operações de espelhamento vertical e horizontal;
-**T4.** rotateD / rotateR (qt:QTree):QTree operações de rotação de 90 graus nos dois sentidos;
-**T5.** mapColourEffect(f:Colour => Colour, qt:QTree):QTree mapeamento uniforme de uma função em toda a imagem. Deverá utilizar este método para ilustrar a aplicação dos efeitos *Noise*, *Contrast* e *Sepia*.
+- **T1.** makeQTree(b:BitMap):QTree criação de uma *quadtree* a partir de um bitmap fornecido e método oposto i.e. para transformar uma quadtree num bitmap;
+- **T2.** scale(scale:Double, qt:QTree):QTree operação de ampliação/redução de uma imagem, segundo o fator fornecido (por exemplo 1.5 ampliará a imagem aumentando ambos os seus lados em 50%);
+- **T3.** mirrorV / mirrorH (qt:QTree):QTree operações de espelhamento vertical e horizontal;
+- **T4.** rotateD / rotateR (qt:QTree):QTree operações de rotação de 90 graus nos dois sentidos;
+- **T5.** mapColourEffect(f:Colour => Colour, qt:QTree):QTree mapeamento uniforme de uma função em toda a imagem. Deverá utilizar este método para ilustrar a aplicação dos efeitos *Noise*, *Contrast* e *Sepia*.
 
-e ser possível realizar as operações típicas (**T6**) de um álbum de imagens (i.e., adicionar, remover, percorrer, procurar, trocar ordem das imagens, editar informação associada) e permitir diferentes formas de visualização (**T7**) (p.e. “*slideshow*”, grelha, etc.). Incluir T7 somente na *GUI*.
+... e ser possível realizar as operações típicas (**T6**) de um álbum de imagens (i.e., adicionar, remover, percorrer, procurar, trocar ordem das imagens, editar informação associada) e permitir diferentes formas de visualização (**T7**) (p.e. “*slideshow*”, grelha, etc.). Incluir T7 somente na *GUI*.
 
 #### Alguns Tipos de Dados a Utilizar
 
