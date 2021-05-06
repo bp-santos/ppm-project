@@ -5,28 +5,29 @@
 
 <GridPane fx:id="grid" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Iscte.GUI.Grid">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="0.0" prefWidth="45.000001430511475" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="550.0" minWidth="10.0" prefWidth="480.19999856948857" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="183.0" minWidth="0.0" prefWidth="73.39999999999998" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="100.0" minHeight="0.0" prefHeight="77.4" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="443.1999694824219" minHeight="10.0" prefHeight="396.2" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="100.40000000000003" minHeight="10.0" prefHeight="77.40000000000003" vgrow="SOMETIMES" />
   </rowConstraints>
   <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="250.0" prefWidth="228.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
     <columnConstraints>
-         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="30.0" prefWidth="100.0" />
       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="30.0" prefWidth="57.0" />
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="64.40000762939454" minHeight="10.0" prefHeight="64.40000762939454" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="86.0" minHeight="57.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+         <RowConstraints maxHeight="31.4" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="31.4" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="86.0" minHeight="46.6" prefHeight="49.6" valignment="CENTER" vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-      <Button fx:id="homeButton" mnemonicParsing="false" onMouseClicked="#onHomeButtonClicked" text="Home" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Button fx:id="homeButton" mnemonicParsing="false" onMouseClicked="#onHomeButtonClicked" prefHeight="26.0" prefWidth="53.0" text="Home" GridPane.rowIndex="2" />
+         <Button mnemonicParsing="false" onMouseClicked="#showGrid" prefHeight="26.0" prefWidth="53.0" text="Show" GridPane.rowIndex="1" />
     </children>
   </GridPane>
+   <TilePane fx:id="tilePane1" alignment="CENTER" maxHeight="396.0" maxWidth="475.0" minHeight="396.0" minWidth="475.0" onDragDropped="#onDragDropped" prefHeight="396.0" prefWidth="475.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+   <Slider fx:id="slider1" nodeOrientation="LEFT_TO_RIGHT" onDragDropped="#onDragDropped" orientation="VERTICAL" prefHeight="261.0" prefWidth="14.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 </GridPane>

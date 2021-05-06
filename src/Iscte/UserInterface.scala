@@ -62,7 +62,7 @@ object UserInterface {
       "\nInput: ")
     val option = Option(scanner.nextLine())
     option match {
-      case Some("1") => println(mapColorEffect_1(image,Iscte.GUI.FxApp.r))
+      case Some("1") => println(mapColorEffect_1(image, Iscte.GUI.FxApp.r))
       case Some("2") => println(mapColorEffect(notPureNoise, image))
       case Some("3") => println(mapColorEffect(contrast, image))
       case Some("4") => println(mapColorEffect(sepia, image))
