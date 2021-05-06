@@ -1,8 +1,8 @@
 package Iscte
 
 import Iscte.QTree.Coords
-
 import java.awt.Color
+import scala.language.postfixOps
 
 case class BitMap(value: Array[Array[Int]])
 

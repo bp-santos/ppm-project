@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:id="grid" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Iscte.GUI.Slideshow">
+<GridPane fx:id="grid" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Iscte.GUI.Slideshow">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="193.0" minWidth="10.0" prefWidth="90.6" />
     <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="432.20003051757806" minWidth="10.0" prefWidth="416.4" />
@@ -23,5 +23,19 @@
       </AnchorPane>
       <Button fx:id="previousButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onPreviousButtonClicked" prefHeight="42.0" prefWidth="64.0" text="Previous" GridPane.rowIndex="1" />
       <Button fx:id="nextButton" mnemonicParsing="false" onMouseClicked="#onNextButtonClicked" prefHeight="42.4" prefWidth="64.0" text="Next" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="250.0" prefWidth="228.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="86.0" minWidth="30.0" prefWidth="57.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="64.40000762939454" minHeight="10.0" prefHeight="64.40000762939454" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="86.0" minHeight="57.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="homeButton" mnemonicParsing="false" onMouseClicked="#onHomeButtonClicked" text="Home" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
    </children>
 </GridPane>

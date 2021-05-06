@@ -2,13 +2,15 @@ package Iscte.GUI
 
 import Iscte._
 import QTree._
+import Iscte.GUI.ImageUtil
 import javafx.fxml.{FXML, FXMLLoader}
 import javafx.scene.{Parent, Scene}
-import javafx.scene.control.{RadioButton, TextField}
+import javafx.scene.control.{Button, RadioButton, TextField}
 import javafx.stage.{FileChooser, Stage}
 import FxApp._
 import javafx.scene.image.{Image, ImageView}
 import javafx.scene.layout.HBox
+
 import java.io._
 
 class Gallery {
@@ -34,37 +36,31 @@ class Gallery {
   @FXML
   private var newNameChange: TextField = _
 
+  @FXML
+  private var slideshowButton: Button = _
+
+  @FXML
+  private var gridButton: Button = _
+
+  @FXML
+  private var editPhotoButton: Button = _
+
   def onSlideshowClicked(): Unit = {
-    val secondStage: Stage = new Stage()
     val fxmlLoader = new FXMLLoader(getClass.getResource("Slideshow.fxml"))
     val mainViewRoot: Parent = fxmlLoader.load()
-    val scene = new Scene(mainViewRoot)
-    secondStage.setTitle("Slideshow - Projeto de Programação Multiparadigma")
-    secondStage.getIcons.add(new Image("Iscte/icon_gallery.png"))
-    secondStage.setScene(scene)
-    secondStage.show()
+    slideshowButton.getScene.setRoot(mainViewRoot)
   }
 
   def onGridClicked(): Unit = {
-    val thirdStage: Stage = new Stage()
     val fxmlLoader = new FXMLLoader(getClass.getResource("Grid.fxml"))
     val mainViewRoot: Parent = fxmlLoader.load()
-    val scene = new Scene(mainViewRoot)
-    thirdStage.setTitle("Grid - Projeto de Programação Multiparadigma")
-    thirdStage.getIcons.add(new Image("Iscte/icon_gallery.png"))
-    thirdStage.setScene(scene)
-    thirdStage.show()
+    gridButton.getScene.setRoot(mainViewRoot)
   }
 
   def onManipulateClicked(): Unit = {
-    val fourthStage: Stage = new Stage()
     val fxmlLoader = new FXMLLoader(getClass.getResource("EditPhoto.fxml"))
     val mainViewRoot: Parent = fxmlLoader.load()
-    val scene = new Scene(mainViewRoot)
-    fourthStage.setTitle("Edit Image - Projeto de Programação Multiparadigma")
-    fourthStage.getIcons.add(new Image("Iscte/icon_gallery.png"))
-    fourthStage.setScene(scene)
-    fourthStage.show()
+    editPhotoButton.getScene.setRoot(mainViewRoot)
   }
 
   private def findIndex(name: String): Int = {

@@ -29,8 +29,9 @@ object FxApp {
   val source: BufferedSource = Source.fromFile("src/Iscte/GUI/album_info.txt")
   val lines: List[String] = source.getLines.toList
   source.close()
-  var album = Album(lines(0), images)
 
+  var album = Album(lines(0), images)
+  var r = MyRandom(2)
 
   def main(args: Array[String]): Unit = {
     Application.launch(classOf[GUI], args: _*)

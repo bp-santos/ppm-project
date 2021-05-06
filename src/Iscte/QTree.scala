@@ -2,6 +2,7 @@ package Iscte
 
 import java.awt.Color
 import scala.annotation.tailrec
+import scala.language.postfixOps
 
 trait QTree[+A]
 

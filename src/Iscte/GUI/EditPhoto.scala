@@ -1,11 +1,14 @@
 package Iscte.GUI
 
 import Iscte._
+import Iscte.ImageUtil
 import QTree._
-import javafx.fxml.FXML
-import javafx.scene.control.TextField
+import javafx.fxml.{FXML, FXMLLoader}
+import javafx.scene.control.{Button, TextField}
 import javafx.scene.image.{Image, ImageView}
 import FxApp._
+import javafx.scene.Parent
+
 import java.io.{File, FileInputStream}
 
 class EditPhoto {
@@ -17,6 +20,18 @@ class EditPhoto {
 
   @FXML
   private var imageView1: ImageView = _
+
+  @FXML
+  private var insertScale: TextField = _
+
+  @FXML
+  private var homeButton: Button = _
+
+  def onHomeButtonClicked(): Unit = {
+    val fxmlLoader = new FXMLLoader(getClass.getResource("Gallery.fxml"))
+    val mainViewRoot: Parent = fxmlLoader.load()
+    homeButton.getScene.setRoot(mainViewRoot)
+  }
 
   private def getIndex(photo: String): Int = {
     if (photo.isEmpty || photo.isBlank) {
@@ -44,9 +59,12 @@ class EditPhoto {
           val bm: BitMap = BitMap.makeBitMap(this.qt)
           ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "scale" =>
-          this.qt = QTreeUtil.scale(3, this.qt)
-          val bm: BitMap = BitMap.makeBitMap(this.qt) //fazer variações
-          ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
+          if(!insertScale.getText.isBlank && insertScale.getText.nonEmpty) {
+            val sc = insertScale.getText.toDouble
+            this.qt = QTreeUtil.scale(sc, this.qt)
+            val bm: BitMap = BitMap.makeBitMap(this.qt)
+            ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
+          }
         case "mirrorV" =>
           this.qt = QTreeUtil.mirrorV(this.qt)
           val bm: BitMap = BitMap.makeBitMap(this.qt)
@@ -64,7 +82,7 @@ class EditPhoto {
           val bm: BitMap = BitMap.makeBitMap(this.qt)
           ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "pureNoise" =>
-          this.qt = QTreeUtil.mapColorEffect_1(MyRandom(2), this.qt)
+          this.qt = QTreeUtil.mapColorEffect_1(this.qt,Iscte.GUI.FxApp.r)._1
           val bm: BitMap = BitMap.makeBitMap(this.qt)
           ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "noise" =>

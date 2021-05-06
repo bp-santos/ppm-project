@@ -36,18 +36,18 @@ object UserInterface {
       "\n6 - Aplicar efeito" +
       "\n0 - Sair" +
       "\n\nInput: ")
-    val option = scanner.nextLine()
+    val option = Option(scanner.nextLine())
     option match {
-      case "1" =>
+      case Some("1") =>
         print("Scale value: ")
         val sc = scanner.nextLine().toDouble
         println(QTreeUtil.scale(sc, image))
-      case "2" => println(QTreeUtil.mirrorV(image))
-      case "3" => println(QTreeUtil.mirrorH(image))
-      case "4" => println(QTreeUtil.rotateL(image))
-      case "5" => println(QTreeUtil.rotateR(image))
-      case "6" => effects(scanner, image)
-      case "0" => return
+      case Some("2") => println(QTreeUtil.mirrorV(image))
+      case Some("3") => println(QTreeUtil.mirrorH(image))
+      case Some("4") => println(QTreeUtil.rotateL(image))
+      case Some("5") => println(QTreeUtil.rotateR(image))
+      case Some("6") => effects(scanner, image)
+      case _ => return
     }
     menu(scanner, file)
   }
@@ -60,13 +60,13 @@ object UserInterface {
       "\n4 - Sepia" +
       "\n0 - Sair" +
       "\nInput: ")
-    val option = scanner.nextLine()
+    val option = Option(scanner.nextLine())
     option match {
-      case "1" => println(mapColorEffect_1(MyRandom(2), image))
-      case "2" => println(mapColorEffect(notPureNoise, image))
-      case "3" => println(mapColorEffect(contrast, image))
-      case "4" => println(mapColorEffect(sepia, image))
-      case "0" =>
+      case Some("1") => println(mapColorEffect_1(image,Iscte.GUI.FxApp.r))
+      case Some("2") => println(mapColorEffect(notPureNoise, image))
+      case Some("3") => println(mapColorEffect(contrast, image))
+      case Some("4") => println(mapColorEffect(sepia, image))
+      case _ =>
     }
   }
 }

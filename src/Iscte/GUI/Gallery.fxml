@@ -4,17 +4,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Iscte.GUI.Gallery">
+<GridPane prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Iscte.GUI.Gallery">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="120.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="144.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="216.0" minWidth="10.0" prefWidth="216.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="24.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="91.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="173.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.99996948242193" minWidth="10.0" prefWidth="247.99996948242193" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="87.00003051757812" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints maxHeight="31.4" minHeight="10.0" prefHeight="22.4" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="63.6" minHeight="10.0" prefHeight="63.6" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="31.39999999999999" minHeight="10.0" prefHeight="23.39999999999999" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="31.4" minHeight="10.0" prefHeight="20.4" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="62.2" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -47,8 +47,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="slideshow" mnemonicParsing="false" onMouseClicked="#onSlideshowClicked" prefHeight="26.0" prefWidth="98.0" text="Slideshow" GridPane.columnSpan="2147483647" />
-            <Button fx:id="grid" mnemonicParsing="false" onMouseClicked="#onGridClicked" prefHeight="26.0" prefWidth="96.0" text="Grid" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
+            <Button fx:id="slideshowButton" mnemonicParsing="false" onMouseClicked="#onSlideshowClicked" prefHeight="26.0" prefWidth="98.0" text="Slideshow" GridPane.columnSpan="2147483647" />
+            <Button fx:id="gridButton" mnemonicParsing="false" onMouseClicked="#onGridClicked" prefHeight="26.0" prefWidth="96.0" text="Grid" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
          </children>
       </GridPane>
       <Label prefHeight="2.0" prefWidth="150.0" text="Album Actions" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="10">
@@ -61,10 +61,10 @@
       <Button mnemonicParsing="false" onMouseClicked="#findPhotoInAlbum" prefHeight="26.0" prefWidth="133.0" text="Find Photo" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
       <Button mnemonicParsing="false" onMouseClicked="#removePhotoFromAlbum" prefHeight="26.0" prefWidth="133.0" text="Remove Photo" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="9" />
       <Button fx:id="addPhoto" mnemonicParsing="false" onMouseClicked="#addPhotoToAlbum" prefHeight="26.0" prefWidth="133.0" text="Add Photo" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
-      <TextField fx:id="insertNameChange" promptText="insert new name " GridPane.columnIndex="2" GridPane.rowIndex="12" />
-      <TextField fx:id="photoNameFind" promptText="insert photo name" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-      <TextField fx:id="photoNameRemove" promptText="insert photo name" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-      <TextField fx:id="photoNameAdd" prefHeight="26.0" prefWidth="92.0" promptText="insert photo name" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <TextField fx:id="insertNameChange" promptText="insert new name.png" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+      <TextField fx:id="photoNameFind" promptText="insert photo name.png" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+      <TextField fx:id="photoNameRemove" promptText="insert photo name.png" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+      <TextField fx:id="photoNameAdd" prefHeight="26.0" prefWidth="92.0" promptText="insert photo name.png" GridPane.columnIndex="2" GridPane.rowIndex="6" />
       <RadioButton fx:id="reverseOrder" contentDisplay="RIGHT" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="232.0" text="Reverse order" GridPane.columnIndex="2" GridPane.rowIndex="11" />
       <GridPane GridPane.columnIndex="2" GridPane.rowIndex="8">
         <columnConstraints>
@@ -75,8 +75,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="oldNameChange" prefHeight="26.0" prefWidth="150.0" promptText="insert old name" />
-            <TextField fx:id="newNameChange" prefHeight="26.0" prefWidth="82.0" promptText="insert new name" GridPane.columnIndex="1" />
+            <TextField fx:id="oldNameChange" prefHeight="26.0" prefWidth="150.0" promptText="insert old name.png" />
+            <TextField fx:id="newNameChange" prefHeight="26.0" prefWidth="82.0" promptText="insert new name.png" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <Button mnemonicParsing="false" onMouseClicked="#changePhotoInfo" prefHeight="26.0" prefWidth="133.0" text="Change Photo Name" GridPane.columnIndex="1" GridPane.rowIndex="8" />
@@ -85,6 +85,6 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button mnemonicParsing="false" onMouseClicked="#onManipulateClicked" prefHeight="26.0" prefWidth="133.0" text="Edit Photo" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+      <Button fx:id="editPhotoButton" mnemonicParsing="false" onMouseClicked="#onManipulateClicked" prefHeight="26.0" prefWidth="133.0" text="Edit Photo" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
    </children>
 </GridPane>

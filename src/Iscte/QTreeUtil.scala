@@ -145,12 +145,14 @@ object QTreeUtil {
 
   /** Uniform mapping of a function onto the entire image.
    * It only works with pureNoise. */
-  def mapColorEffect_1(random: Random, qt: QTree[Coords]): QTree[Coords] = {
+  def mapColorEffect_1(qt: QTree[Coords],random: Random): (QTree[Coords],Random) = {
     qt match {
       case QNode(value, one, two, three, four) =>
-        QNode(value, mapColorEffect_1(random, one), mapColorEffect_1(random, two), mapColorEffect_1(random, three), mapColorEffect_1(random, four))
-      case QLeaf((value, color: Color)) => QLeaf((value, pureNoise(color, random)._1))
-      case _ => QEmpty
+        (QNode(value, mapColorEffect_1(one,random)._1, mapColorEffect_1(two,random)._1, mapColorEffect_1(three,random)._1, mapColorEffect_1(four,random)._1),random)
+      case QLeaf((value, color: Color)) => {
+        (QLeaf((value, pureNoise(color, random)._1)),pureNoise(color,random)._2)
+      }
+      case _ => (QEmpty,random)
     }
   }
 
