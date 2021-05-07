@@ -12,13 +12,13 @@
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <AnchorPane prefHeight="408.0" prefWidth="416.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <ImageView fx:id="actualImage" fitHeight="360.0" fitWidth="360.0" layoutX="28.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="actualImage" fitHeight="360.0" fitWidth="416.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
       <Button fx:id="previousButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onPreviousButtonClicked" prefHeight="42.0" prefWidth="64.0" text="Previous" GridPane.rowIndex="1" />

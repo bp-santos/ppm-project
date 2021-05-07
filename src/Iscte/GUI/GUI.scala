@@ -25,7 +25,7 @@ class GUI extends Application {
 
 object FxApp {
   val images: List[(String, QTree[Coords])] = Iscte.Album.makeAlbum(new File("src/Iscte/Images").listFiles.map(_.getName).toList)
-
+  println(images.map(_._1))
   val source: BufferedSource = Source.fromFile("src/Iscte/GUI/album_info.txt")
   val lines: List[String] = source.getLines.toList
   source.close()

@@ -126,13 +126,18 @@ class EditPhoto {
 
   def savePhoto(): Unit = {
     val bt: BitMap = BitMap.makeBitMap(this.qt)
-    ImageUtil.writeImage(bt.value, "src/Iscte/Images/new_" + photoName.getText, "png")
+    ImageUtil.writeImage(bt.value, "src/Iscte/Images/" + photoName.getText, "png")
     this.qt match {
       case QEmpty => album = album
       case _ =>
+        val index = getIndex(photoName.getText)
+        if (index == -1)
+          System.out.println("Error: Image not found")
+        else
+        album = Album(album.name, album.content.take(index) ++ album.content.drop(index + 1))
         album.content match {
-          case Nil => album = Album(album.name, List(("new_" + photoName.getText, qt)))
-          case _ => album = Album(album.name, ("new_" + photoName.getText, qt) :: album.content)
+          case Nil => album = Album(album.name, List((photoName.getText, qt)))
+          case _ => album = Album(album.name, (photoName.getText, qt) :: album.content)
         }
     }
   }
