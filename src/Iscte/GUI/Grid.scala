@@ -7,7 +7,6 @@ import javafx.scene.Parent
 import javafx.scene.control.Button
 import javafx.scene.image.{Image, ImageView}
 import javafx.scene.layout.TilePane
-
 import java.io.{File, FileInputStream}
 
 class Grid {

@@ -49,8 +49,8 @@ class Gallery {
     val fxmlLoader = new FXMLLoader(getClass.getResource("Slideshow.fxml"))
     val mainViewRoot: Parent = fxmlLoader.load()
     slideshowButton.getScene.setRoot(mainViewRoot)
-    val txtImage:Node = mainViewRoot.getChildrenUnmodifiable.get(0).getScene.lookup("#actualImage")
-    val imageField:ImageView = txtImage.asInstanceOf[ImageView]
+    val txtImage: Node = mainViewRoot.getChildrenUnmodifiable.get(0).getScene.lookup("#actualImage")
+    val imageField: ImageView = txtImage.asInstanceOf[ImageView]
     val bm: BitMap = BitMap.makeBitMap(album.content.head._2)
     Iscte.GUI.ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
     val file = new File("src/Iscte/temp/temp.png")
@@ -177,7 +177,7 @@ class Gallery {
       val qt: QTree[Coords] = QTree.makeQTree(BitMap(ImageUtil.readColorImage(path)))
       album.content match {
         case Nil => album = Album(album.name, List((photo, qt)))
-        case _ => album = Album(album.name, album.content:+(photo, qt))
+        case _ => album = Album(album.name, album.content :+ (photo, qt))
       }
       val bt: BitMap = BitMap.makeBitMap(qt)
       ImageUtil.writeImage(bt.value, "src/Iscte/Images/" + photo, "png")

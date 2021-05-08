@@ -8,7 +8,6 @@ import javafx.scene.control.{Button, TextField}
 import javafx.scene.image.{Image, ImageView}
 import FxApp._
 import javafx.scene.Parent
-
 import java.io.{File, FileInputStream}
 
 class EditPhoto {
@@ -59,7 +58,7 @@ class EditPhoto {
           val bm: BitMap = BitMap.makeBitMap(this.qt)
           ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "scale" =>
-          if(!insertScale.getText.isBlank && insertScale.getText.nonEmpty) {
+          if (!insertScale.getText.isBlank && insertScale.getText.nonEmpty) {
             val sc = insertScale.getText.toDouble
             this.qt = QTreeUtil.scale(sc, this.qt)
             val bm: BitMap = BitMap.makeBitMap(this.qt)
@@ -82,7 +81,7 @@ class EditPhoto {
           val bm: BitMap = BitMap.makeBitMap(this.qt)
           ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "pureNoise" =>
-          this.qt = QTreeUtil.mapColorEffect_1(this.qt,Iscte.GUI.FxApp.r)._1
+          this.qt = QTreeUtil.mapColorEffect_1(this.qt, Iscte.GUI.FxApp.r)._1
           val bm: BitMap = BitMap.makeBitMap(this.qt)
           ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
         case "noise" =>
@@ -134,7 +133,7 @@ class EditPhoto {
         if (index == -1)
           System.out.println("Error: Image not found")
         else
-        album = Album(album.name, album.content.take(index) ++ album.content.drop(index + 1))
+          album = Album(album.name, album.content.take(index) ++ album.content.drop(index + 1))
         album.content match {
           case Nil => album = Album(album.name, List((photoName.getText, qt)))
           case _ => album = Album(album.name, (photoName.getText, qt) :: album.content)

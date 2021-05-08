@@ -7,7 +7,6 @@ import FxApp._
 import Iscte.QTree.Coords
 import javafx.scene.Parent
 import javafx.scene.control.Button
-
 import java.io.{File, FileInputStream}
 
 class Slideshow {
