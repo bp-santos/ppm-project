@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.scene.{Parent, Scene}
 import javafx.stage.Stage
-
 import java.io.File
 import scala.io.{BufferedSource, Source}
 
@@ -25,13 +24,13 @@ class GUI extends Application {
 
 object FxApp {
   val images: List[(String, QTree[Coords])] = Iscte.Album.makeAlbum(new File("src/Iscte/Images").listFiles.map(_.getName).toList)
-  println(images.map(_._1))
   val source: BufferedSource = Source.fromFile("src/Iscte/GUI/album_info.txt")
   val lines: List[String] = source.getLines.toList
   source.close()
 
-  var album = Album(lines(0), images)
-  var r = MyRandom(2)
+  var album: Album = Album(lines.head, images)
+  var r: MyRandom = MyRandom(2)
+  var index: Int = -1
 
   def main(args: Array[String]): Unit = {
     Application.launch(classOf[GUI], args: _*)

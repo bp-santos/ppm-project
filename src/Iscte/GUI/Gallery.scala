@@ -4,7 +4,7 @@ import Iscte._
 import QTree._
 import Iscte.GUI.ImageUtil
 import javafx.fxml.{FXML, FXMLLoader}
-import javafx.scene.{Parent, Scene}
+import javafx.scene.{Node, Parent, Scene}
 import javafx.scene.control.{Button, RadioButton, TextField}
 import javafx.stage.{FileChooser, Stage}
 import FxApp._
@@ -49,6 +49,13 @@ class Gallery {
     val fxmlLoader = new FXMLLoader(getClass.getResource("Slideshow.fxml"))
     val mainViewRoot: Parent = fxmlLoader.load()
     slideshowButton.getScene.setRoot(mainViewRoot)
+    val txtImage:Node = mainViewRoot.getChildrenUnmodifiable.get(0).getScene.lookup("#actualImage")
+    val imageField:ImageView = txtImage.asInstanceOf[ImageView]
+    val bm: BitMap = BitMap.makeBitMap(album.content.head._2)
+    Iscte.GUI.ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
+    val file = new File("src/Iscte/temp/temp.png")
+    val image = new FileInputStream(file)
+    imageField.setImage(new Image(image))
   }
 
   def onGridClicked(): Unit = {
@@ -170,7 +177,7 @@ class Gallery {
       val qt: QTree[Coords] = QTree.makeQTree(BitMap(ImageUtil.readColorImage(path)))
       album.content match {
         case Nil => album = Album(album.name, List((photo, qt)))
-        case _ => album = Album(album.name, (photo, qt) :: album.content)
+        case _ => album = Album(album.name, album.content:+(photo, qt))
       }
       val bt: BitMap = BitMap.makeBitMap(qt)
       ImageUtil.writeImage(bt.value, "src/Iscte/Images/" + photo, "png")

@@ -26,8 +26,8 @@
                 <ImageView fx:id="imageView1" fitHeight="220.0" fitWidth="214.0" layoutX="22.0" layoutY="-1.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
             </children>
         </AnchorPane>
-      <Button mnemonicParsing="false" onMouseClicked="#mirroVPhoto" prefHeight="26.0" prefWidth="71.0" text="MirrorV" GridPane.rowIndex="2" />
-      <Button mnemonicParsing="false" onMouseClicked="#mirroHPhoto" prefHeight="26.0" prefWidth="71.0" text="MirrorH" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button mnemonicParsing="false" onMouseClicked="#mirrorVPhoto" prefHeight="26.0" prefWidth="71.0" text="MirrorV" GridPane.rowIndex="2" />
+      <Button mnemonicParsing="false" onMouseClicked="#mirrorHPhoto" prefHeight="26.0" prefWidth="71.0" text="MirrorH" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button mnemonicParsing="false" onMouseClicked="#rotateLPhoto" prefHeight="26.0" prefWidth="71.0" text="RotateL" GridPane.rowIndex="3" />
       <Button mnemonicParsing="false" onMouseClicked="#rotateRPhoto" prefHeight="26.0" prefWidth="71.0" text="RotateR" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Button mnemonicParsing="false" onMouseClicked="#contrastPhoto" prefHeight="26.0" prefWidth="71.0" text="Contrast" GridPane.rowIndex="5" />

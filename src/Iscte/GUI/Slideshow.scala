@@ -12,8 +12,6 @@ import java.io.{File, FileInputStream}
 
 class Slideshow {
 
-  private var index: Int = -1
-
   @FXML
   private var actualImage: ImageView = _
 
@@ -35,7 +33,7 @@ class Slideshow {
   }
 
   def onPreviousButtonClicked(): Unit = {
-    if (this.index - 1 >= 0) {
+    if (index - 1 >= 0) {
       saveBitMap(album.content.apply(index - 1)._2)
       index = index - 1
     }
@@ -46,7 +44,7 @@ class Slideshow {
   }
 
   def onNextButtonClicked(): Unit = {
-    if (this.index + 1 <= album.content.length - 1) {
+    if (index + 1 <= album.content.length - 1) {
       saveBitMap(album.content.apply(index + 1)._2)
       index = index + 1
     }

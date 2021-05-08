@@ -108,9 +108,9 @@ class EditPhoto {
 
   def scalePhoto(): Unit = findPhoto("scale")
 
-  def mirroVPhoto(): Unit = findPhoto("mirrorV")
+  def mirrorVPhoto(): Unit = findPhoto("mirrorV")
 
-  def mirroHPhoto(): Unit = findPhoto("mirrorH")
+  def mirrorHPhoto(): Unit = findPhoto("mirrorH")
 
   def rotateLPhoto(): Unit = findPhoto("rotateL")
 

@@ -31,7 +31,7 @@
   </GridPane>
    <ScrollPane fx:id="scrollPane1" maxWidth="590.0" minHeight="400.0" minWidth="500.0" prefHeight="416.0" prefWidth="584.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
      <content>
-       <AnchorPane>
+       <AnchorPane maxWidth="570.0" prefWidth="570.0">
             <children>
                <TilePane fx:id="tilePane1" alignment="TOP_CENTER" layoutX="6.0" layoutY="10.0" maxWidth="570.0" minHeight="410.0" minWidth="575.0" prefWidth="570.0" />
             </children>
