@@ -1,3 +1,4 @@
 - O scale só funciona para alguns valores inferiores à unidade, dependendo da imagem escolhida. O problema deve-se ao facto de não ter sido feito o gradiente.
 - A variável random (noise puro) é guardada no ficheiro "album_info.txt" mas não é utilizada na criação do random na GUI.class.
 - A ordem do álbum não é guardada entre sessões
+- Foi necessário duplicar a classe ImageUtil em duas pastas diferentes
