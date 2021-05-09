@@ -16,6 +16,7 @@ class GUI extends Application {
     val fxmlLoader = new FXMLLoader(getClass.getResource("Gallery.fxml"))
     val mainViewRoot: Parent = fxmlLoader.load()
     val scene = new Scene(mainViewRoot)
+    scene.getStylesheets.add("Iscte/GUI/config.css")
     primaryStage.getIcons.add(new Image("Iscte/icon_gallery.png"))
     primaryStage.setScene(scene)
     primaryStage.show()
@@ -29,8 +30,8 @@ object FxApp {
   source.close()
 
   var album: Album = Album(lines.head, images)
-  var r: MyRandom = MyRandom(2)
-  var index: Int = -1
+  var r: Random = MyRandom(2).nextInt._2
+  var index: Int = 0
 
   def main(args: Array[String]): Unit = {
     Application.launch(classOf[GUI], args: _*)

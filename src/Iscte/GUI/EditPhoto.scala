@@ -8,7 +8,7 @@ import javafx.scene.control.{Button, TextField}
 import javafx.scene.image.{Image, ImageView}
 import FxApp._
 import javafx.scene.Parent
-import java.io.{File, FileInputStream}
+import java.io.{File, FileInputStream, PrintWriter}
 
 class EditPhoto {
 
@@ -25,6 +25,36 @@ class EditPhoto {
 
   @FXML
   private var homeButton: Button = _
+
+  @FXML
+  private var scaleButton: Button = _
+
+  @FXML
+  private var mirrorVButton: Button = _
+
+  @FXML
+  private var mirrorHButton: Button = _
+
+  @FXML
+  private var rotateLButton: Button = _
+
+  @FXML
+  private var rotateRButton: Button = _
+
+  @FXML
+  private var pureNoiseButton: Button = _
+
+  @FXML
+  private var noiseButton: Button = _
+
+  @FXML
+  private var contrastButton: Button = _
+
+  @FXML
+  private var sepiaButton: Button = _
+
+  @FXML
+  private var savePhotoButton: Button = _
 
   def onHomeButtonClicked(): Unit = {
     val fxmlLoader = new FXMLLoader(getClass.getResource("Gallery.fxml"))
@@ -57,6 +87,17 @@ class EditPhoto {
           this.qt = album.content.apply(index)._2
           val bm: BitMap = BitMap.makeBitMap(this.qt)
           ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
+          insertScale.setDisable(false)
+          scaleButton.setDisable(false)
+          mirrorVButton.setDisable(false)
+          mirrorHButton.setDisable(false)
+          rotateLButton.setDisable(false)
+          rotateRButton.setDisable(false)
+          pureNoiseButton.setDisable(false)
+          noiseButton.setDisable(false)
+          contrastButton.setDisable(false)
+          sepiaButton.setDisable(false)
+          savePhotoButton.setDisable(false)
         case "scale" =>
           if (!insertScale.getText.isBlank && insertScale.getText.nonEmpty) {
             val sc = insertScale.getText.toDouble
@@ -132,11 +173,15 @@ class EditPhoto {
         val index = getIndex(photoName.getText)
         if (index == -1)
           System.out.println("Error: Image not found")
-        else
+        else {
           album = Album(album.name, album.content.take(index) ++ album.content.drop(index + 1))
-        album.content match {
-          case Nil => album = Album(album.name, List((photoName.getText, qt)))
-          case _ => album = Album(album.name, (photoName.getText, qt) :: album.content)
+          album.content match {
+            case Nil => album = Album(album.name, List((photoName.getText, qt)))
+            case _ => album = Album(album.name, (photoName.getText, qt) :: album.content)
+          }
+          val pw = new PrintWriter(new File("src/Iscte/GUI/album_info.txt"))
+          pw.write(FxApp.album.name + "\n" + FxApp.r.toString)
+          pw.close()
         }
     }
   }

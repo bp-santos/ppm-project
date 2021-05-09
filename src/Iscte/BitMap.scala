@@ -1,6 +1,6 @@
 package Iscte
 
-import Iscte.QTree.Coords
+import Iscte.QTree._
 import java.awt.Color
 import scala.language.postfixOps
 
@@ -9,11 +9,10 @@ case class BitMap(value: Array[Array[Int]])
 object BitMap {
 
   def makeBitMap(qt: QTree[Coords]): BitMap = {
-
     def aux(qt1: QTree[Coords]): List[List[Int]] = {
       qt1 match {
         case QEmpty => Nil
-        case QLeaf((coords: Coords, color: Color)) => makeListY(coords, color)
+        case QLeaf((cords: Coords, color: Color)) => makeListY(cords, color)
         case QNode(_, l1, l2, l3, l4) =>
           mergeY(mergeX(aux(l1), aux(l2)), mergeX(aux(l3), aux(l4)))
       }

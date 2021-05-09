@@ -1,5 +1,6 @@
 package Iscte
 
+import Iscte.GUI.FxApp
 import Iscte.QTree.Coords
 import java.awt.Color
 
@@ -27,11 +28,12 @@ object QTreeUtil {
   /** Magnification/reduction operation on an image, according to the factor provided. */
   def scale(sc: Double, qt: QTree[Coords]): QTree[Coords] = {
     qt match {
-      case QNode(value, one, two, three, four) =>
-        QNode(value, scale(sc, one), scale(sc, two), scale(sc, three), scale(sc, four))
+      case QNode(cd: Coords, one, two, three, four) =>
+        QNode((((cd._1._1 * sc).toInt, (cd._1._2 * sc).toInt),
+          ((cd._2._1 * sc).toInt, (cd._2._2 * sc).toInt)), scale(sc, one), scale(sc, two), scale(sc, three), scale(sc, four))
       case QLeaf((cd: Coords, color)) =>
-        QLeaf(((cd._1._1 * sc.round.toInt, cd._1._2 * sc.round.toInt),
-          (cd._2._1 * sc.round.toInt, cd._2._2 * sc.round.toInt)), color)
+        QLeaf((((cd._1._1 * sc).toInt, (cd._1._2 * sc).toInt),
+          ((cd._2._1 * sc).toInt, (cd._2._2 * sc).toInt)), color)
       case _ => QEmpty
     }
   }
@@ -144,14 +146,14 @@ object QTreeUtil {
 
   /** Uniform mapping of a function onto the entire image.
    * It only works with pureNoise. */
-  def mapColorEffect_1(qt: QTree[Coords],random: Random): (QTree[Coords],Random) = {
+  def mapColorEffect_1(qt: QTree[Coords], random: Random): (QTree[Coords], Random) = {
     qt match {
       case QNode(value, one, two, three, four) =>
-        (QNode(value, mapColorEffect_1(one,random)._1, mapColorEffect_1(two,random)._1, mapColorEffect_1(three,random)._1, mapColorEffect_1(four,random)._1),random)
+        (QNode(value, mapColorEffect_1(one, FxApp.r)._1, mapColorEffect_1(two, FxApp.r)._1, mapColorEffect_1(three, FxApp.r)._1, mapColorEffect_1(four, FxApp.r)._1), FxApp.r)
       case QLeaf((value, color: Color)) => {
-        (QLeaf((value, pureNoise(color, random)._1)),pureNoise(color,random)._2)
+        (QLeaf((value, pureNoise(color, FxApp.r)._1)), pureNoise(color, FxApp.r)._2)
       }
-      case _ => (QEmpty,random)
+      case _ => (QEmpty, random)
     }
   }
 
@@ -159,8 +161,8 @@ object QTreeUtil {
   def pureNoise(c: Color, r: Random): (Color, Random) = {
     val i = r.nextInt(2)
     i._1 match {
-      case 0 => (c, i._2)
-      case 1 => (Color.black, i._2)
+      case 0 => FxApp.r = i._2; (c, i._2)
+      case 1 => FxApp.r = i._2; (Color.black, i._2)
     }
   }
 

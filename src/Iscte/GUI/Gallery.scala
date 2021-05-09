@@ -5,7 +5,7 @@ import QTree._
 import Iscte.GUI.ImageUtil
 import javafx.fxml.{FXML, FXMLLoader}
 import javafx.scene.{Node, Parent, Scene}
-import javafx.scene.control.{Button, RadioButton, TextField}
+import javafx.scene.control.{Button, TextField}
 import javafx.stage.{FileChooser, Stage}
 import FxApp._
 import javafx.scene.image.{Image, ImageView}
@@ -25,7 +25,10 @@ class Gallery {
   private var photoNameFind: TextField = _
 
   @FXML
-  private var reverseOrder: RadioButton = _
+  private var photoToMove1: TextField = _
+
+  @FXML
+  private var photoToMove2: TextField = _
 
   @FXML
   private var insertNameChange: TextField = _
@@ -105,17 +108,30 @@ class Gallery {
     else {
       album = Album(newName, album.content)
       val pw = new PrintWriter(new File("src/Iscte/GUI/album_info.txt"))
-      pw.write(album.name)
+      pw.write(album.name + "\n" + r)
       pw.close()
     }
   }
 
   def changeAlbumOrder(): Unit = {
+    val photo1 = photoToMove1.getText
+    val photo2 = photoToMove2.getText
     if (album.content.isEmpty || album.content == null)
       System.out.println("Error: Album content is empty")
-    else if (reverseOrder.isSelected)
-      album = Album(album.name, album.content.reverse)
-    else System.out.println("Error: Reverse order not selected")
+    else if (photo1.isEmpty || photo1.isBlank || photo2.isEmpty || photo2.isBlank)
+      System.out.println("Error: Image name field empty/blank")
+    else {
+      val index1 = findIndex(photo1)
+      val index2 = findIndex(photo2)
+      if (index1 == -1 || index2 == -1)
+        System.out.println("Error: Image not found")
+      else {
+        val qt1 = album.content.apply(index1)
+        val qt2 = album.content.apply(index2)
+        album = Album(album.name, album.content.updated(index1, (qt2._1, qt2._2)))
+        album = Album(album.name, album.content.updated(index2, (qt1._1, qt1._2)))
+      }
+    }
   }
 
   def findPhotoInAlbum(): Unit = {

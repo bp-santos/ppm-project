@@ -35,8 +35,8 @@ class Grid {
       ImageUtil.writeImage(bm.value, "src/Iscte/temp/temp.png", "png")
       val file = new File("src/Iscte/temp/temp.png")
       val image = new FileInputStream(file)
-      val imageView = new ImageView()
-      imageView.setImage(new Image(image))
+
+      val imageView = new ImageView(new Image(image))
       imageView.setPreserveRatio(true)
       imageView.setFitWidth(250)
       imageView.setFitHeight(250)
